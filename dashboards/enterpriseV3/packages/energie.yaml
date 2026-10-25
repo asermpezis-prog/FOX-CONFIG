@@ -8,6 +8,50 @@
 #          sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power (W)
 #   Utility-Meter balkonkraftwerk_tag/_woche/_monat stehen in configuration.yaml.
 
+homeassistant:
+  customize:
+    # Der Lesekopf liefert für die Phasenwerte keine Einheit mit
+    sensor.bitshake_smartmeterreader_lk13be_power_l1:
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_power_l2:
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_power_l3:
+      unit_of_measurement: W
+      device_class: power
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr:
+      unit_of_measurement: V
+      device_class: voltage
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_volt_l2_curr:
+      unit_of_measurement: V
+      device_class: voltage
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_volt_l3_curr:
+      unit_of_measurement: V
+      device_class: voltage
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_curr_l1:
+      unit_of_measurement: A
+      device_class: current
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_curr_l2:
+      unit_of_measurement: A
+      device_class: current
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_curr_l3:
+      unit_of_measurement: A
+      device_class: current
+      state_class: measurement
+    sensor.bitshake_smartmeterreader_lk13be_hz:
+      unit_of_measurement: Hz
+      device_class: frequency
+      state_class: measurement
+
 input_number:
   strompreis_cent:
     name: Strompreis
