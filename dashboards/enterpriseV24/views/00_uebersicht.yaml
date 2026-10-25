@@ -95,6 +95,58 @@ sections:
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
   column_span: 3
 - type: grid
+  title: ⚡ Energie & PV
+  column_span: 3
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Balkonkraftwerk
+    secondary: "{{ states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.pv_erzeugung_heute')|float(0)|round(2) }} kWh"
+    icon: mdi:solar-power-variant
+    multiline_secondary: true
+    fill_container: true
+    icon_color: amber
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-energie-pv
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Hausverbrauch
+    secondary: "{{ states('sensor.hausverbrauch_leistung')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.hausverbrauch_heute')|float(0)|round(1) }} kWh"
+    icon: mdi:home-lightning-bolt
+    multiline_secondary: true
+    fill_container: true
+    icon_color: blue
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-energie-pv
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Netzbezug heute
+    secondary: "{{ states('sensor.netz_bezug_tag')|float(0)|round(2) }} kWh\nKosten: {{ states('sensor.stromkosten_heute')|float(0)|round(2) }} €"
+    icon: mdi:transmission-tower
+    multiline_secondary: true
+    fill_container: true
+    icon_color: red
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-energie-pv
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Autarkie heute
+    secondary: "{{ states('sensor.autarkiegrad_heute')|float(0)|round(0) }} %\nPV-Ersparnis: {{ states('sensor.pv_ersparnis_heute')|float(0)|round(2) }} €"
+    icon: mdi:leaf
+    multiline_secondary: true
+    fill_container: true
+    icon_color: green
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-energie-pv
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
   title: Sicherheit
   cards:
   - type: custom:mushroom-template-card
@@ -227,7 +279,7 @@ sections:
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
   title: 🏠 Erdgeschoss
-  column_span: 3
+  column_span: 1
   cards:
   - type: custom:mushroom-template-card
     primary: Erdgeschoss
@@ -241,6 +293,24 @@ sections:
       navigation_path: /dashboard-enterprisev24/erdgeschoss
     card_mod:
       style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  title: 🌳 Außen
+  column_span: 1
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Außenbereich
+    secondary: Garage · Carport · Garten
+    icon: mdi:tree-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: orange
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/aussenbereich
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
         \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
@@ -311,24 +381,6 @@ sections:
       navigation_path: /dashboard-enterprisev24/nikolas
     card_mod:
       style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-- type: grid
-  title: 🌳 Außen
-  column_span: 3
-  cards:
-  - type: custom:mushroom-template-card
-    primary: Außenbereich
-    secondary: Garage · Carport · Garten
-    icon: mdi:tree-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/aussenbereich
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
         \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
