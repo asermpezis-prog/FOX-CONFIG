@@ -1,0 +1,76 @@
+# configuration.yaml
+# Korrigierte Version
+homeassistant:
+  packages: !include_dir_named dashboards/enterpriseV3/packages
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+shell_command:
+  copy_ha_registry: /config/scripts/copy_ha_registry.sh
+
+utility_meter:
+  balkonkraftwerk_tag:
+    source: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+    cycle: daily
+
+  balkonkraftwerk_woche:
+    source: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+    cycle: weekly
+
+  balkonkraftwerk_monat:
+    source: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+    cycle: monthly
+
+lovelace:
+  resource_mode: yaml
+  resources:
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
+      type: module
+    - url: /hacsfiles/apexcharts-card/apexcharts-card.js
+      type: module
+    - url: /hacsfiles/lovelace-mushroom/mushroom.js
+      type: module
+    - url: /hacsfiles/fold-entity-row/fold-entity-row.js
+      type: module
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
+      type: module
+    - url: /local/ha-devices-card.js?v=109
+      type: module
+
+  dashboards:
+    dashboard-enterprisev24:
+      mode: yaml
+      title: Enterprise
+      icon: mdi:home
+      show_in_sidebar: true
+      filename: dashboards/enterpriseV24/ui-lovelace.yaml
+
+input_datetime:
+  kamera_letzte_person:
+    name: Kamera letzte Person
+    has_date: true
+    has_time: true
+  kamera_letzte_bewegung:
+    name: Kamera letzte Bewegung
+    has_date: true
+    has_time: true
+
+counter:
+  kamera_personen_heute:
+    name: Kamera Personen heute
+    initial: 0
+    step: 1
+  kamera_bewegungen_heute:
+    name: Kamera Bewegungen heute
+    initial: 0
+    step: 1

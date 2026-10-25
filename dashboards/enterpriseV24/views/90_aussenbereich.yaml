@@ -1,0 +1,97 @@
+title: Außenbereich
+path: aussenbereich
+icon: mdi:tree-outline
+type: masonry
+cards:
+- type: vertical-stack
+  title: 🏚 Garage
+  cards:
+  - type: markdown
+    content: '**Bereich vorbereitet**
+
+      Noch keine Geräte in der Garage vorhanden.
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"
+- type: vertical-stack
+  title: 🚗 Carport
+  cards:
+  - type: markdown
+    content: '## 💡 Carport-LED
+
+      Schalten · Helligkeit · Farbtemperatur
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"
+  - type: custom:mushroom-light-card
+    entity: light.0xa4c138a6a5f99597
+    name: LED Lampe
+    icon: mdi:lightbulb
+    use_light_color: true
+    show_brightness_control: true
+    show_color_temp_control: true
+    collapsible_controls: false
+    layout: horizontal
+  - type: entities
+    title: LED Details
+    show_header_toggle: false
+    entities:
+    - entity: light.0xa4c138a6a5f99597
+      name: LED Lampe
+    - entity: select.0xa4c138a6a5f99597_color_power_on_behavior
+      name: Einschaltverhalten
+    - entity: switch.0xa4c138a6a5f99597_do_not_disturb
+      name: Nicht stören
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"
+  - type: entities
+    title: Carport-Sensor Status
+    show_header_toggle: false
+    entities:
+    - entity: binary_sensor.0xa4c138ee351b1d33_presence
+      name: Belegung
+    - entity: sensor.0xa4c138ee351b1d33_motion_state
+      name: Motion state
+    - entity: sensor.0xa4c138ee351b1d33_illuminance
+      name: Beleuchtungsstärke
+    - entity: sensor.0xa4c138ee351b1d33_battery
+      name: Batterie
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"
+  - type: entities
+    title: Sensor Einstellungen
+    show_header_toggle: false
+    entities:
+    - entity: number.0xa4c138ee351b1d33_fading_time
+      name: Fading time
+    - entity: switch.0xa4c138ee351b1d33_indicator
+      name: Indicator
+    - entity: select.0xa4c138ee351b1d33_motion_detection_mode
+      name: Motion detection mode
+    - entity: number.0xa4c138ee351b1d33_motion_detection_sensitivity
+      name: Motion detection sensitivity
+    - entity: number.0xa4c138ee351b1d33_static_detection_distance
+      name: Static detection distance
+    - entity: number.0xa4c138ee351b1d33_static_detection_sensitivity
+      name: Static detection sensitivity
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"
+- type: vertical-stack
+  title: 🌳 Garten
+  cards:
+  - type: markdown
+    content: '**Bereich vorbereitet**
+
+      Noch keine Geräte im Garten vorhanden.
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"

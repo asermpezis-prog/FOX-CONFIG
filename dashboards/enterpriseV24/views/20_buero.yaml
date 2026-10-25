@@ -1,0 +1,122 @@
+title: Büro
+path: buero
+icon: mdi:desk
+type: masonry
+cards:
+- type: markdown
+  content: '## Büro'
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(121,85,72,0.28);\n  background: rgba(121,85,72,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Klima
+  show_header_toggle: false
+  entities:
+  - entity: sensor.0x983268fffe9b883c_temperature
+    name: Temperatur
+  - entity: sensor.0x983268fffe9b883c_humidity
+    name: Luftfeuchtigkeit
+  - entity: sensor.0x983268fffe9b883c_battery
+    name: Batterie
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(121,85,72,0.28);\n  background: rgba(121,85,72,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: custom:apexcharts-card
+  header:
+    show: true
+    title: Büro – 48 Stunden
+    show_states: true
+    colorize_states: true
+  graph_span: 48h
+  update_interval: 5min
+  now:
+    show: true
+    label: Jetzt
+  yaxis:
+  - id: humidity
+    min: 35
+    max: 75
+    decimals: 1
+    apex_config:
+      title:
+        text: Feuchtigkeit (%)
+  - id: temperature
+    opposite: true
+    min: 10
+    max: 35
+    decimals: 1
+    apex_config:
+      title:
+        text: Temperatur (°C)
+  series:
+  - entity: sensor.0x983268fffe9b883c_humidity
+    name: Luftfeuchtigkeit
+    yaxis_id: humidity
+    type: line
+    stroke_width: 3
+    extend_to: now
+    group_by:
+      duration: 10min
+      func: avg
+    show:
+      in_header: raw
+      legend_value: false
+  - entity: sensor.0x983268fffe9b883c_temperature
+    name: Temperatur
+    yaxis_id: temperature
+    type: line
+    stroke_width: 2
+    extend_to: now
+    group_by:
+      duration: 10min
+      func: avg
+    show:
+      in_header: raw
+      legend_value: false
+  apex_config:
+    chart:
+      height: 360
+      toolbar:
+        show: true
+    legend:
+      show: true
+      position: top
+    tooltip:
+      shared: true
+      intersect: false
+    annotations:
+      yaxis:
+      - y: 50
+        borderColor: green
+        strokeDashArray: 5
+        label:
+          borderColor: green
+          text: Ziel 50 %
+      - y: 60
+        borderColor: orange
+        strokeDashArray: 5
+        label:
+          borderColor: orange
+          text: Hoch 60 %
+      - y: 65
+        borderColor: red
+        strokeDashArray: 5
+        label:
+          borderColor: red
+          text: Kritisch 65 %
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(121,85,72,0.28);\n  background: rgba(121,85,72,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Weitere Geräte
+  show_header_toggle: false
+  entities:
+  - entity: switch.merros_desktop_outlet
+    name: Desktop
+  - entity: binary_sensor.0xf044d3fffe1c34ba_water_leak
+    name: Wasserleck
+  - entity: sensor.0xf044d3fffe1c34ba_battery
+    name: Batterie Wassermelder
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(121,85,72,0.28);\n  background: rgba(121,85,72,0.08);\n\
+      \  box-shadow: none;\n}"

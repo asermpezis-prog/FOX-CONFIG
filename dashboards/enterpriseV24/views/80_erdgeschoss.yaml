@@ -1,0 +1,56 @@
+title: Erdgeschoss
+path: erdgeschoss
+icon: mdi:sofa-outline
+type: masonry
+cards:
+- type: vertical-stack
+  title: 🛋 Wohnzimmer
+  cards:
+  - type: entities
+    title: Smart TV Pro
+    show_header_toggle: false
+    entities:
+    - entity: media_player.smart_tv_pro
+      name: TV
+    - entity: remote.smart_tv_pro
+      name: Fernbedienung
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
+        \  box-shadow: none;\n}"
+  - type: conditional
+    conditions:
+    - entity: media_player.smart_tv_pro
+      state_not: unavailable
+    card:
+      type: media-control
+      entity: media_player.smart_tv_pro
+  - type: markdown
+    content: '**Vorbereitet:** Licht, Temperatur und Luftfeuchtigkeit können hier ergänzt werden, sobald Geräte im Wohnzimmer
+      vorhanden sind.
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
+        \  box-shadow: none;\n}"
+- type: vertical-stack
+  title: 🍳 Küche
+  cards:
+  - type: markdown
+    content: '**Bereich vorbereitet**
+
+      Noch keine Geräte in der Registry gefunden.
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
+        \  box-shadow: none;\n}"
+  - type: entities
+    title: Tagesinfo
+    entities:
+    - type: attribute
+      entity: sun.sun
+      attribute: next_rising
+      name: Nächster Sonnenaufgang
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
+        \  box-shadow: none;\n}"

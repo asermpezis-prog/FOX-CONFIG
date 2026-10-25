@@ -1,0 +1,138 @@
+title: Hobbyraum
+path: hobbyraum
+icon: mdi:controller-classic
+type: masonry
+cards:
+- type: markdown
+  content: '## Hobbyraum'
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(156,39,176,0.28);\n  background: rgba(156,39,176,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Klima
+  show_header_toggle: false
+  entities:
+  - entity: sensor.0xe456acfffe5bf40e_temperature
+    name: Temperatur
+  - entity: sensor.0xe456acfffe5bf40e_humidity
+    name: Luftfeuchtigkeit
+  - entity: sensor.0xe456acfffe5bf40e_battery
+    name: Batterie
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(156,39,176,0.28);\n  background: rgba(156,39,176,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: custom:apexcharts-card
+  header:
+    show: true
+    title: Hobbyraum – 48 Stunden
+    show_states: true
+    colorize_states: true
+  graph_span: 48h
+  update_interval: 5min
+  now:
+    show: true
+    label: Jetzt
+  yaxis:
+  - id: humidity
+    min: 35
+    max: 75
+    decimals: 1
+    apex_config:
+      title:
+        text: Feuchtigkeit (%)
+  - id: temperature
+    opposite: true
+    min: 10
+    max: 35
+    decimals: 1
+    apex_config:
+      title:
+        text: Temperatur (°C)
+  - id: dehumidifier
+    opposite: true
+    min: 0
+    max: 1
+    decimals: 0
+    show: false
+  series:
+  - entity: sensor.0xe456acfffe5bf40e_humidity
+    name: Luftfeuchtigkeit
+    yaxis_id: humidity
+    type: line
+    stroke_width: 3
+    extend_to: now
+    group_by:
+      duration: 10min
+      func: avg
+    show:
+      in_header: raw
+      legend_value: false
+  - entity: sensor.0xe456acfffe5bf40e_temperature
+    name: Temperatur
+    yaxis_id: temperature
+    type: line
+    stroke_width: 2
+    extend_to: now
+    group_by:
+      duration: 10min
+      func: avg
+    show:
+      in_header: raw
+      legend_value: false
+  - entity: switch.merros_entfeuchter_outlet
+    name: Entfeuchter läuft
+    yaxis_id: dehumidifier
+    type: area
+    curve: stepline
+    stroke_width: 2
+    opacity: 0.25
+    extend_to: now
+    transform: 'return x === ''on'' ? 1 : 0;'
+    show:
+      in_header: false
+      legend_value: false
+  apex_config:
+    chart:
+      height: 360
+      toolbar:
+        show: true
+    legend:
+      show: true
+      position: top
+    tooltip:
+      shared: true
+      intersect: false
+    annotations:
+      yaxis:
+      - y: 50
+        borderColor: green
+        strokeDashArray: 5
+        label:
+          borderColor: green
+          text: Ziel 50 %
+      - y: 60
+        borderColor: orange
+        strokeDashArray: 5
+        label:
+          borderColor: orange
+          text: Hoch 60 %
+      - y: 65
+        borderColor: red
+        strokeDashArray: 5
+        label:
+          borderColor: red
+          text: Kritisch 65 %
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(156,39,176,0.28);\n  background: rgba(156,39,176,0.08);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Entfeuchter
+  show_header_toggle: false
+  entities:
+  - entity: switch.merros_entfeuchter_outlet
+    name: Entfeuchter
+  - entity: sensor.0xe456acfffe5bf40e_humidity
+    name: Aktuelle Feuchtigkeit
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(156,39,176,0.28);\n  background: rgba(156,39,176,0.08);\n\
+      \  box-shadow: none;\n}"

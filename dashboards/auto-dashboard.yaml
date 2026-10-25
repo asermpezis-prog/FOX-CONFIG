@@ -1,0 +1,8 @@
+title: Mein HAOS Dashboard
+views:
+- title: Start
+  path: start
+  icon: mdi:home
+  cards:
+  - type: entities
+    title: Startseite

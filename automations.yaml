@@ -1,0 +1,157 @@
+- id: copy_ha_registry_every_5_minutes
+  alias: HA Registry alle 5 Minuten kopieren
+  mode: single
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  action:
+  - service: shell_command.copy_ha_registry
+- id: '1778797266862'
+  alias: Licht im Carport einschalten
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.0xa4c138ee351b1d33_presence
+      light_target:
+        entity_id: light.0xa4c138a6a5f99597
+      no_motion_wait: 10
+- id: '1778798292844'
+  alias: Entfeuchter im Keller automatisch steuern
+  description: Nachtbetrieb mit Mindestlaufzeit, Anti-Flattern und festen Grenzwerten.
+  triggers:
+  - trigger: time_pattern
+    minutes: /5
+  - trigger: state
+    entity_id: sensor.0xe456acfffe5bf40e_humidity
+  - trigger: time
+    at: 05:00:00
+  conditions: []
+  actions:
+  - variables:
+      humidity: '{{ states(''sensor.0xe456acfffe5bf40e_humidity'') | float(0) }}'
+  - choose:
+    - conditions:
+      - condition: time
+        after: 01:00:00
+        before: 05:00:00
+      - condition: template
+        value_template: '{{ humidity >= 60 }}'
+      - condition: state
+        entity_id: switch.merros_entfeuchter_outlet
+        state: 'off'
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.merros_entfeuchter_outlet
+    - conditions:
+      - condition: state
+        entity_id: switch.merros_entfeuchter_outlet
+        state: 'on'
+        for:
+          minutes: 15
+      - condition: template
+        value_template: '{{ humidity <= 50 or now().strftime(''%H:%M:%S'') >= ''05:00:00''
+          }}
+
+          '
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.merros_entfeuchter_outlet
+  mode: single
+
+- id: entfeuchter_technikraum_automatisch_steuern_v10
+  alias: Entfeuchter Technikraum automatisch steuern
+  description: Nachtbetrieb mit Mindestlaufzeit, Anti-Flattern und festen Grenzwerten.
+  triggers:
+    - trigger: time_pattern
+      minutes: /5
+    - trigger: state
+      entity_id: sensor.0xf044d3fffef6dcf0_humidity
+    - trigger: time
+      at: "05:00:00"
+  conditions: []
+  actions:
+    - variables:
+        humidity: "{{ states('sensor.0xf044d3fffef6dcf0_humidity') | float(0) }}"
+    - choose:
+        - conditions:
+            - condition: time
+              after: "01:00:00"
+              before: "05:00:00"
+            - condition: template
+              value_template: "{{ humidity >= 60 }}"
+            - condition: state
+              entity_id: switch.schlafzimmer_merros_schlafzimmer_outlet
+              state: "off"
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id: switch.schlafzimmer_merros_schlafzimmer_outlet
+        - conditions:
+            - condition: state
+              entity_id: switch.schlafzimmer_merros_schlafzimmer_outlet
+              state: "on"
+              for:
+                minutes: 15
+            - condition: template
+              value_template: >
+                {{ humidity <= 50 or now().strftime('%H:%M:%S') >= '05:00:00' }}
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id: switch.schlafzimmer_merros_schlafzimmer_outlet
+  mode: single
+
+- id: enterprise_v19_kamera_person_erkannt
+  alias: Enterprise V19 - Kamera Person erkannt
+  description: Speichert Zeitpunkt und zählt Personenerkennungen.
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.tapo_c310_person_detection
+      to: "on"
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.kamera_letzte_person
+      data:
+        timestamp: "{{ now().timestamp() }}"
+    - service: counter.increment
+      target:
+        entity_id: counter.kamera_personen_heute
+  mode: queued
+
+- id: enterprise_v19_kamera_bewegung_erkannt
+  alias: Enterprise V19 - Kamera Bewegung erkannt
+  description: Speichert Zeitpunkt und zählt Bewegungen.
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.tapo_c310_cell_motion_detection
+        - binary_sensor.tapo_c310_motion_alarm
+      to: "on"
+  action:
+    - service: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.kamera_letzte_bewegung
+      data:
+        timestamp: "{{ now().timestamp() }}"
+    - service: counter.increment
+      target:
+        entity_id: counter.kamera_bewegungen_heute
+  mode: queued
+
+- id: enterprise_v19_kamera_zaehler_mitternacht
+  alias: Enterprise V19 - Kamera Tageszähler zurücksetzen
+  description: Setzt die Kamera-Zähler täglich um Mitternacht zurück.
+  trigger:
+    - platform: time
+      at: "00:00:00"
+  action:
+    - service: counter.reset
+      target:
+        entity_id:
+          - counter.kamera_personen_heute
+          - counter.kamera_bewegungen_heute
+  mode: single

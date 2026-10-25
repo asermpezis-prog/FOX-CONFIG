@@ -1,0 +1,20 @@
+{
+  "version": "V24",
+  "final": true,
+  "status": "BESTANDEN",
+  "views": [
+    "00_uebersicht.yaml",
+    "10_technikraum.yaml",
+    "20_buero.yaml",
+    "30_hobbyraum.yaml",
+    "40_schlafzimmer.yaml",
+    "50_bad.yaml",
+    "60_stavros.yaml",
+    "70_nikolas.yaml",
+    "75_kameras.yaml",
+    "80_erdgeschoss.yaml",
+    "90_aussenbereich.yaml"
+  ],
+  "card_mod": true,
+  "sidebar": "nur aktuelle Version sichtbar"
+}

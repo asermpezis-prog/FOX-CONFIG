@@ -1,0 +1,367 @@
+title: Übersicht
+path: uebersicht
+icon: mdi:view-dashboard-variant
+type: sections
+max_columns: 3
+dense_section_placement: false
+header:
+  layout: responsive
+  card:
+    type: markdown
+    content: '## 🧭 Enterprise
+
+      Dein Zuhause auf einen Blick'
+    card_mod:
+      style: "ha-card {\n  border-radius: 18px;\n  background: linear-gradient(135deg,\n    rgba(33,150,243,0.10),\n    rgba(156,39,176,0.08));\n\
+        \  border: 1px solid rgba(120,120,120,0.18);\n  box-shadow: none;\n}"
+sections:
+- type: grid
+  title: Status
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Alarmstatus
+    secondary: '{% if is_state(''binary_sensor.0x0015bc0031064e35_smoke'',''on'') %}
+
+      Rauchalarm Technikraum
+
+      {% elif is_state(''binary_sensor.0xf044d3fffe1c34ba_water_leak'',''on'') %}
+
+      Wasserwarnung Büro
+
+      {% else %}
+
+      Alles in Ordnung
+
+      {% endif %}'
+    icon: mdi:shield-home
+    multiline_secondary: true
+    fill_container: true
+    icon_color: "{% if is_state('binary_sensor.0x0015bc0031064e35_smoke','on')\n   or is_state('binary_sensor.0xf044d3fffe1c34ba_water_leak','on')\
+      \ %}\nred\n{% else %}\ngreen\n{% endif %}"
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.35);\n  background:\n    {% if is_state('binary_sensor.0x0015bc0031064e35_smoke','on')\n\
+        \       or is_state('binary_sensor.0xf044d3fffe1c34ba_water_leak','on') %}\n      rgba(244,67,54,0.22)\n    {% else\
+        \ %}\n      rgba(76,175,80,0.10)\n    {% endif %};\n}"
+  - type: custom:mushroom-template-card
+    primary: Höchste Feuchtigkeit
+    secondary: "{% set daten = [\n  ('Technikraum', states('sensor.0xf044d3fffef6dcf0_humidity')),\n  ('Büro', states('sensor.0x983268fffe9b883c_humidity')),\n\
+      \  ('Hobbyraum', states('sensor.0xe456acfffe5bf40e_humidity')),\n  ('Schlafzimmer', states('sensor.0xa4c1380ac39bffff_humidity')),\n\
+      \  ('Bad', states('sensor.0xa4c1380ab990ffff_humidity')),\n  ('Stavros', states('sensor.stavros_klima_humidity')),\n\
+      \  ('Nikolas', states('sensor.0xa4c1380f4bc2ffff_humidity'))\n] %}\n{% set ns = namespace(raum='–', wert=-1) %}\n{%\
+      \ for raum, wert in daten %}\n  {% if wert not in ['unknown','unavailable','none',''] and wert|float(-1) > ns.wert %}\n\
+      \    {% set ns.raum = raum %}\n    {% set ns.wert = wert|float %}\n  {% endif %}\n{% endfor %}\n{{ ns.wert|round(1)\
+      \ }} % · {{ ns.raum }}"
+    icon: mdi:water-percent
+    multiline_secondary: true
+    fill_container: true
+    icon_color: "{% set werte = [\n  states('sensor.0xf044d3fffef6dcf0_humidity'),\n  states('sensor.0x983268fffe9b883c_humidity'),\n\
+      \  states('sensor.0xe456acfffe5bf40e_humidity'),\n  states('sensor.0xa4c1380ac39bffff_humidity'),\n  states('sensor.0xa4c1380ab990ffff_humidity'),\n\
+      \  states('sensor.stavros_klima_humidity'),\n  states('sensor.0xa4c1380f4bc2ffff_humidity')\n] | reject('in', ['unknown','unavailable','none',''])\
+      \ | map('float') | list %}\n{% set m = werte|max if werte else 0 %}\n{% if m >= 65 %} red\n{% elif m >= 60 %} orange\n\
+      {% else %} green\n{% endif %}"
+    card_mod:
+      style: "ha-card {\n  background: rgba(33,150,243,0.10);\n  border: 1px solid rgba(33,150,243,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Aktive Entfeuchter
+    secondary: "{% set ns = namespace(anzahl=0, namen=[]) %}\n{% for name, ent in [\n  ('Hobbyraum','switch.merros_entfeuchter_outlet'),\n\
+      \  ('Technikraum','switch.schlafzimmer_merros_schlafzimmer_outlet'),\n  ('Bad','switch.bad_merros_bad_outlet')\n] %}\n\
+      \  {% if is_state(ent,'on') %}\n    {% set ns.anzahl = ns.anzahl + 1 %}\n    {% set ns.namen = ns.namen + [name] %}\n\
+      \  {% endif %}\n{% endfor %}\n{{ ns.anzahl }} aktiv{% if ns.namen %} · {{ ns.namen|join(', ') }}{% endif %}"
+    icon: mdi:air-humidifier
+    multiline_secondary: true
+    fill_container: true
+    icon_color: blue
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(33,150,243,0.35);\n  background:\n    {% if is_state('switch.merros_entfeuchter_outlet','on')\n\
+        \       or is_state('switch.schlafzimmer_merros_schlafzimmer_outlet','on')\n       or is_state('switch.bad_merros_bad_outlet','on')\
+        \ %}\n      rgba(33,150,243,0.20)\n    {% else %}\n      rgba(33,150,243,0.06)\n    {% endif %};\n}"
+  - type: custom:mushroom-template-card
+    primary: Kamera
+    secondary: '👤 Heute: {{ states(''counter.kamera_personen_heute'') }}
+
+      🚶 Bewegungen: {{ states(''counter.kamera_bewegungen_heute'') }}'
+    icon: mdi:cctv
+    multiline_secondary: true
+    fill_container: true
+    icon_color: blue
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/kameras
+    card_mod:
+      style: "ha-card {\n  background: rgba(33,150,243,0.10);\n  border: 1px solid rgba(33,150,243,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  column_span: 3
+- type: grid
+  title: Sicherheit
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Letzte Person
+    secondary: '{% set t = states(''input_datetime.kamera_letzte_person'') %}
+
+      {% if t in [''unknown'',''unavailable'',''''] %}
+
+      Noch keine Erkennung
+
+      {% else %}
+
+      {{ as_timestamp(t) | timestamp_custom(''%d.%m.%Y %H:%M:%S'', true) }}
+
+      {% endif %}'
+    icon: mdi:account-alert
+    multiline_secondary: true
+    fill_container: true
+    icon_color: red
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/kameras
+    card_mod:
+      style: "ha-card {\n  background: rgba(244,67,54,0.08);\n  border: 1px solid rgba(244,67,54,0.24);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Letzte Bewegung
+    secondary: '{% set t = states(''input_datetime.kamera_letzte_bewegung'') %}
+
+      {% if t in [''unknown'',''unavailable'',''''] %}
+
+      Noch keine Erkennung
+
+      {% else %}
+
+      {{ as_timestamp(t) | timestamp_custom(''%d.%m.%Y %H:%M:%S'', true) }}
+
+      {% endif %}'
+    icon: mdi:motion-sensor
+    multiline_secondary: true
+    fill_container: true
+    icon_color: amber
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/kameras
+    card_mod:
+      style: "ha-card {\n  background: rgba(244,67,54,0.08);\n  border: 1px solid rgba(244,67,54,0.24);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Personen heute
+    secondary: '{{ states(''counter.kamera_personen_heute'') }}'
+    icon: mdi:account-multiple
+    multiline_secondary: true
+    fill_container: true
+    icon_color: red
+    card_mod:
+      style: "ha-card {\n  background: rgba(244,67,54,0.08);\n  border: 1px solid rgba(244,67,54,0.24);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Bewegungen heute
+    secondary: '{{ states(''counter.kamera_bewegungen_heute'') }}'
+    icon: mdi:run
+    multiline_secondary: true
+    fill_container: true
+    icon_color: amber
+    card_mod:
+      style: "ha-card {\n  background: rgba(244,67,54,0.08);\n  border: 1px solid rgba(244,67,54,0.24);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  column_span: 3
+- type: grid
+  title: ⬇️ Keller
+  column_span: 3
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Technikraum
+    secondary: '🌡 {{ states(''sensor.0xf044d3fffef6dcf0_temperature'') }} °C
+
+      💧 {{ states(''sensor.0xf044d3fffef6dcf0_humidity'') }} %
+
+      🖥️ HAOS Steckdose · 🔌 Entfeuchter {{ ''an'' if is_state(''switch.schlafzimmer_merros_schlafzimmer_outlet'',''on'') else
+      ''aus'' }}'
+    icon: mdi:server
+    multiline_secondary: true
+    fill_container: true
+    icon_color: blue
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/technikraum
+    card_mod:
+      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Büro
+    secondary: '🌡 {{ states(''sensor.0x983268fffe9b883c_temperature'') }} °C
+
+      💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
+    icon: mdi:desk
+    multiline_secondary: true
+    fill_container: true
+    icon_color: brown
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/buero
+    card_mod:
+      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Hobbyraum
+    secondary: '🌡 {{ states(''sensor.0xe456acfffe5bf40e_temperature'') }} °C
+
+      💧 {{ states(''sensor.0xe456acfffe5bf40e_humidity'') }} %
+
+      🔌 Entfeuchter {{ ''an'' if is_state(''switch.merros_entfeuchter_outlet'',''on'') else ''aus'' }}'
+    icon: mdi:controller-classic
+    multiline_secondary: true
+    fill_container: true
+    icon_color: purple
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/hobbyraum
+    card_mod:
+      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  title: 🏠 Erdgeschoss
+  column_span: 3
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Erdgeschoss
+    secondary: Wohnzimmer · Küche
+    icon: mdi:sofa-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: green
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/erdgeschoss
+    card_mod:
+      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  title: ⬆️ 1. Etage
+  column_span: 3
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Schlafzimmer
+    secondary: '🌡 {{ states(''sensor.0xa4c1380ac39bffff_temperature'') }} °C
+
+      💧 {{ states(''sensor.0xa4c1380ac39bffff_humidity'') }} %'
+    icon: mdi:bed-king-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: teal
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/schlafzimmer
+    card_mod:
+      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Bad
+    secondary: '🌡 {{ states(''sensor.0xa4c1380ab990ffff_temperature'') }} °C
+
+      💧 {{ states(''sensor.0xa4c1380ab990ffff_humidity'') }} %
+
+      🔌 Entfeuchter {{ ''an'' if is_state(''switch.bad_merros_bad_outlet'',''on'') else ''aus'' }}'
+    icon: mdi:bathtub-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: cyan
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/bad
+    card_mod:
+      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Stavros
+    secondary: '🌡 {{ states(''sensor.stavros_klima_temperature'') }} °C
+
+      💧 {{ states(''sensor.stavros_klima_humidity'') }} %'
+    icon: mdi:account-school-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: orange
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/stavros
+    card_mod:
+      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Nikolas
+    secondary: '🌡 {{ states(''sensor.0xa4c1380f4bc2ffff_temperature'') }} °C
+
+      💧 {{ states(''sensor.0xa4c1380f4bc2ffff_humidity'') }} %'
+    icon: mdi:account-school
+    multiline_secondary: true
+    fill_container: true
+    icon_color: orange
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/nikolas
+    card_mod:
+      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  title: 🌳 Außen
+  column_span: 3
+  cards:
+  - type: custom:mushroom-template-card
+    primary: Außenbereich
+    secondary: Garage · Carport · Garten
+    icon: mdi:tree-outline
+    multiline_secondary: true
+    fill_container: true
+    icon_color: orange
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/aussenbereich
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  title: Steuerung
+  column_span: 3
+  cards:
+  - type: entities
+    title: 💧 Entfeuchter
+    show_header_toggle: false
+    entities:
+    - entity: switch.merros_entfeuchter_outlet
+      name: Hobbyraum
+    - entity: switch.schlafzimmer_merros_schlafzimmer_outlet
+      name: Technikraum
+    - entity: switch.bad_merros_bad_outlet
+      name: Bad
+    card_mod:
+      style: "ha-card {\n  background: rgba(0,150,136,0.08);\n  border: 1px solid rgba(0,150,136,0.26);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n}"
+  - type: entities
+    title: 🔌 Wichtige Steckdosen
+    show_header_toggle: false
+    entities:
+    - entity: switch.0xa4c13808410affff
+      name: HAOS Steckdose (Technikraum / NUC6)
+    - entity: switch.0xa4c138088db5ffff
+      name: Kühlschrank
+    - entity: switch.0xa4c1380f7434ffff
+      name: Hobbyraum
+    - entity: switch.smart_switch_23080457178050510d0448e1e9d4dbcd_outlet
+      name: Desktop
+    - entity: switch.merros_waschmaschine_outlet
+      name: Waschmaschine
+    card_mod:
+      style: "ha-card {\n  background: rgba(0,150,136,0.08);\n  border: 1px solid rgba(0,150,136,0.26);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n}"

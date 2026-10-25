@@ -1,0 +1,31 @@
+# Geheimnisse und Laufzeitdaten
+secrets.yaml
+.storage/
+*.pem
+*.key
+home-assistant_v2.db*
+*.log*
+*.fault
+.HA_VERSION
+.ha_run.lock
+.uuid
+.cloud/
+.cache/
+.Trash-*/
+deps/
+tts/
+__pycache__/
+# von HACS / Add-ons verwaltet
+custom_components/
+zigbee2mqtt/
+# www: Registry-Kopien enthalten Zugangsdaten, Rest ist generiert
+www/community/
+www/ha-debug/
+www/core.*
+www/ha_entities.html
+www/last_update.txt
+# Aufräum-Archiv und alte Sicherungen
+_archiv_*/
+*.backup*
+*.bak
+*.zip

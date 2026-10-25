@@ -1,0 +1,120 @@
+title: Kameras
+path: kameras
+icon: mdi:cctv
+type: masonry
+cards:
+- type: markdown
+  content: '## 📷 Kamera Technikraum'
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+      \  box-shadow: none;\n}"
+- type: picture-entity
+  title: Tapo C310 Livebild
+  entity: camera.tapo_c310_mainstream
+  camera_view: live
+  aspect_ratio: '16:9'
+  show_name: true
+  show_state: true
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+      \  box-shadow: none;\n}"
+- type: vertical-stack
+  title: 🛡 Sicherheit
+  cards:
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+    - type: custom:mushroom-template-card
+      primary: Letzte Person
+      secondary: '{% set t = states(''input_datetime.kamera_letzte_person'') %}
+
+        {% if t in [''unknown'',''unavailable'',''''] %}
+
+        Noch keine Erkennung
+
+        {% else %}
+
+        {{ as_timestamp(t) | timestamp_custom(''%d.%m.%Y %H:%M:%S'', true) }}
+
+        {% endif %}'
+      icon: mdi:account-alert
+      icon_color: red
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+          \  box-shadow: none;\n}"
+    - type: custom:mushroom-template-card
+      primary: Letzte Bewegung
+      secondary: '{% set t = states(''input_datetime.kamera_letzte_bewegung'') %}
+
+        {% if t in [''unknown'',''unavailable'',''''] %}
+
+        Noch keine Erkennung
+
+        {% else %}
+
+        {{ as_timestamp(t) | timestamp_custom(''%d.%m.%Y %H:%M:%S'', true) }}
+
+        {% endif %}'
+      icon: mdi:motion-sensor
+      icon_color: amber
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+          \  box-shadow: none;\n}"
+    - type: custom:mushroom-template-card
+      primary: Personen heute
+      secondary: '{{ states(''counter.kamera_personen_heute'') }}'
+      icon: mdi:account-multiple
+      icon_color: red
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+          \  box-shadow: none;\n}"
+    - type: custom:mushroom-template-card
+      primary: Bewegungen heute
+      secondary: '{{ states(''counter.kamera_bewegungen_heute'') }}'
+      icon: mdi:run
+      icon_color: amber
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+          \  box-shadow: none;\n}"
+- type: entities
+  title: Aktueller Status
+  show_header_toggle: false
+  entities:
+  - entity: binary_sensor.tapo_c310_cell_motion_detection
+    name: Bewegung erkannt
+  - entity: binary_sensor.tapo_c310_motion_alarm
+    name: Bewegungsalarm
+  - entity: binary_sensor.tapo_c310_person_detection
+    name: Person erkannt
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Kamera Einstellungen
+  show_header_toggle: false
+  entities:
+  - entity: switch.tapo_c310_ir_lampe
+    name: IR-Lampe
+  - entity: switch.tapo_c310_autofokus
+    name: Autofokus
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+      \  box-shadow: none;\n}"
+- type: entities
+  title: Kamera Wartung
+  show_header_toggle: false
+  entities:
+  - entity: button.tapo_c310_set_system_date_and_time
+    name: Datum und Uhrzeit synchronisieren
+  - entity: button.tapo_c310_reboot
+    name: Kamera neu starten
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n\
+      \  box-shadow: none;\n}"

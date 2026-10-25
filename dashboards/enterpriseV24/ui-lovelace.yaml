@@ -1,0 +1,17 @@
+title: Enterprise
+views:
+  - !include views/00_uebersicht.yaml
+  # Keller
+  - !include views/10_technikraum.yaml
+  - !include views/20_buero.yaml
+  - !include views/30_hobbyraum.yaml
+  # Erdgeschoss
+  - !include views/80_erdgeschoss.yaml
+  # 1. Etage
+  - !include views/40_schlafzimmer.yaml
+  - !include views/50_bad.yaml
+  - !include views/60_stavros.yaml
+  - !include views/70_nikolas.yaml
+  # Sicherheit / Außen
+  - !include views/75_kameras.yaml
+  - !include views/90_aussenbereich.yaml

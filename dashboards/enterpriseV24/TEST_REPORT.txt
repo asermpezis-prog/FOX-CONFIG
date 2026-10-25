@@ -1,0 +1,16 @@
+Enterprise V24 FINAL – Prüfroutine: BESTANDEN
+
+[OK] 00_uebersicht.yaml
+[OK] 10_technikraum.yaml
+[OK] 20_buero.yaml
+[OK] 30_hobbyraum.yaml
+[OK] 40_schlafzimmer.yaml
+[OK] 50_bad.yaml
+[OK] 60_stavros.yaml
+[OK] 70_nikolas.yaml
+[OK] 75_kameras.yaml
+[OK] 80_erdgeschoss.yaml
+[OK] 90_aussenbereich.yaml
+[OK] card-mod Styling
+[OK] HAOS Steckdose Technikraum / NUC6
+[OK] interne Route enterpriseV24

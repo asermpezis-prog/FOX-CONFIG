@@ -1,0 +1,18 @@
+template:
+  - sensor:
+      - name: "Höchste Luftfeuchtigkeit"
+        unique_id: hoechste_luftfeuchtigkeit
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+        state: >
+          {% set werte = [
+            states('sensor.0xf044d3fffef6dcf0_humidity'),
+            states('sensor.0x983268fffe9b883c_humidity'),
+            states('sensor.0xe456acfffe5bf40e_humidity'),
+            states('sensor.0xa4c1380ac39bffff_humidity'),
+            states('sensor.0xa4c1380ab990ffff_humidity'),
+            states('sensor.stavros_klima_humidity'),
+            states('sensor.0xa4c1380f4bc2ffff_humidity')
+          ] | reject('in', ['unknown', 'unavailable', 'none', '']) | map('float') | list %}
+          {{ werte | max | round(1) if werte else 0 }}
