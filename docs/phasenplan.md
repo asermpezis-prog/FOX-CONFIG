@@ -43,7 +43,7 @@ So bleibt alles in Betrieb, auch Home Assistant und der Router.
 | 2.x | Herd: Platte vorne links | L2 | 25.10.2026 | ca. 1,0 kW auf L2 (23:24), kleinere Platte |
 | 2.x | Herd: Platte hinten rechts | L1 | 25.10.2026 | ca. 0,9 kW auf L1 (23:27), teilt Phase mit vorne rechts |
 | 2.x | Herd: Platte hinten links | L2 | 25.10.2026 | ca. 1,15 kW auf L2 (23:25), teilt Phase mit vorne links |
-| 2.x | Herd: Backofen | | | |
+| 2.x | Herd: Backofen | L3 | 25.10.2026 | Aufheizen ca. 2,1 kW auf L3 (23:29); erklärt auch die L3-Spitze um 20 Uhr |
 | 2.3 | Spülmaschine | L1 | 25.10.2026 | Heizphase ca. 2,1 kW auf L1 (22:40–23:10), danach L1 ~30 W |
 | 2.4 | Garage | L3 | 25.10.2026 | Tesla einphasig 8 A ≈ 1,9 kW, konstant auf L3 seit ca. 20:45 |
 | 2.5 | Heizung, Heizkreisverteiler | | | |
