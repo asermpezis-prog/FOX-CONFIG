@@ -1,0 +1,167 @@
+# energie.yaml – Stromzähler (LK13BE), Balkonkraftwerk (Meross) und Kosten
+# Wird über homeassistant.packages (!include_dir_named) automatisch geladen.
+#
+# Quellen:
+#   Netz:  sensor.bitshake_smartmeterreader_lk13be_importactive / _exportactive (kWh)
+#          sensor.bitshake_smartmeterreader_lk13be_power (W)
+#   PV:    sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy (Wh)
+#          sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power (W)
+#   Utility-Meter balkonkraftwerk_tag/_woche/_monat stehen in configuration.yaml.
+
+input_number:
+  strompreis_cent:
+    name: Strompreis
+    icon: mdi:currency-eur
+    min: 0
+    max: 100
+    step: 0.01
+    unit_of_measurement: ct/kWh
+    mode: box
+    initial: 31
+
+utility_meter:
+  netz_bezug_tag:
+    source: sensor.bitshake_smartmeterreader_lk13be_importactive
+    cycle: daily
+  netz_bezug_monat:
+    source: sensor.bitshake_smartmeterreader_lk13be_importactive
+    cycle: monthly
+  netz_einspeisung_tag:
+    source: sensor.bitshake_smartmeterreader_lk13be_exportactive
+    cycle: daily
+  netz_einspeisung_monat:
+    source: sensor.bitshake_smartmeterreader_lk13be_exportactive
+    cycle: monthly
+
+template:
+  - sensor:
+      # ---------- PV in kWh (Quelle liefert Wh) ----------
+      - name: "PV Erzeugung heute"
+        unique_id: pv_erzeugung_heute_kwh
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total
+        icon: mdi:solar-power-variant
+        state: >
+          {% set v = states('sensor.balkonkraftwerk_tag') | float(0) %}
+          {% set u = state_attr('sensor.balkonkraftwerk_tag', 'unit_of_measurement') %}
+          {{ (v / 1000 if u == 'Wh' else v) | round(3) }}
+        availability: "{{ has_value('sensor.balkonkraftwerk_tag') }}"
+
+      - name: "PV Erzeugung Woche"
+        unique_id: pv_erzeugung_woche_kwh
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total
+        icon: mdi:solar-power-variant
+        state: >
+          {% set v = states('sensor.balkonkraftwerk_woche') | float(0) %}
+          {% set u = state_attr('sensor.balkonkraftwerk_woche', 'unit_of_measurement') %}
+          {{ (v / 1000 if u == 'Wh' else v) | round(3) }}
+        availability: "{{ has_value('sensor.balkonkraftwerk_woche') }}"
+
+      - name: "PV Erzeugung Monat"
+        unique_id: pv_erzeugung_monat_kwh
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total
+        icon: mdi:solar-power-variant
+        state: >
+          {% set v = states('sensor.balkonkraftwerk_monat') | float(0) %}
+          {% set u = state_attr('sensor.balkonkraftwerk_monat', 'unit_of_measurement') %}
+          {{ (v / 1000 if u == 'Wh' else v) | round(3) }}
+        availability: "{{ has_value('sensor.balkonkraftwerk_monat') }}"
+
+      # ---------- Leistung ----------
+      - name: "Hausverbrauch Leistung"
+        unique_id: hausverbrauch_leistung
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:home-lightning-bolt
+        # Netz (positiv = Bezug, negativ = Einspeisung) + PV-Erzeugung
+        state: >
+          {% set netz = states('sensor.bitshake_smartmeterreader_lk13be_power') | float(0) %}
+          {% set pv = states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power') | float(0) %}
+          {{ [netz + pv, 0] | max | round(0) }}
+        availability: "{{ has_value('sensor.bitshake_smartmeterreader_lk13be_power') }}"
+
+      # ---------- Energiebilanz heute ----------
+      - name: "Hausverbrauch heute"
+        unique_id: hausverbrauch_heute_kwh
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total
+        icon: mdi:home-lightning-bolt-outline
+        state: >
+          {% set bezug = states('sensor.netz_bezug_tag') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_tag') | float(0) %}
+          {% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}
+          {{ [bezug + pv - einsp, 0] | max | round(3) }}
+
+      - name: "PV Eigenverbrauchsquote heute"
+        unique_id: pv_eigenverbrauchsquote_heute
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:percent-circle-outline
+        state: >
+          {% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_tag') | float(0) %}
+          {{ (([pv - einsp, 0] | max) / pv * 100) | round(0) if pv > 0 else 0 }}
+
+      - name: "Autarkiegrad heute"
+        unique_id: autarkiegrad_heute
+        unit_of_measurement: "%"
+        state_class: measurement
+        icon: mdi:shield-sun-outline
+        state: >
+          {% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_tag') | float(0) %}
+          {% set bezug = states('sensor.netz_bezug_tag') | float(0) %}
+          {% set eigen = [pv - einsp, 0] | max %}
+          {% set gesamt = bezug + eigen %}
+          {{ (eigen / gesamt * 100) | round(0) if gesamt > 0 else 0 }}
+
+      # ---------- Kosten und Ersparnis ----------
+      - name: "Stromkosten heute"
+        unique_id: stromkosten_heute
+        unit_of_measurement: EUR
+        device_class: monetary
+        state_class: total
+        icon: mdi:cash
+        state: >
+          {{ (states('sensor.netz_bezug_tag') | float(0)
+              * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}
+
+      - name: "Stromkosten Monat"
+        unique_id: stromkosten_monat
+        unit_of_measurement: EUR
+        device_class: monetary
+        state_class: total
+        icon: mdi:cash-multiple
+        state: >
+          {{ (states('sensor.netz_bezug_monat') | float(0)
+              * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}
+
+      - name: "PV Ersparnis heute"
+        unique_id: pv_ersparnis_heute
+        unit_of_measurement: EUR
+        device_class: monetary
+        state_class: total
+        icon: mdi:piggy-bank-outline
+        # selbst verbrauchter Solarstrom × Strompreis
+        state: >
+          {% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_tag') | float(0) %}
+          {{ (([pv - einsp, 0] | max) * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}
+
+      - name: "PV Ersparnis Monat"
+        unique_id: pv_ersparnis_monat
+        unit_of_measurement: EUR
+        device_class: monetary
+        state_class: total
+        icon: mdi:piggy-bank
+        state: >
+          {% set pv = states('sensor.pv_erzeugung_monat') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_monat') | float(0) %}
+          {{ (([pv - einsp, 0] | max) * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}

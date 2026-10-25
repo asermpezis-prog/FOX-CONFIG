@@ -1,0 +1,481 @@
+# Energie-Dashboard: Balkonkraftwerk, Stromzähler, Steckdosen
+# Benötigt: mushroom, apexcharts-card, card-mod (alle in configuration.yaml geladen)
+# Sensoren aus dashboards/enterpriseV3/packages/energie.yaml
+title: Energie & PV
+
+x-stil-pv: &stil_pv
+  style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(255,152,0,0.30);\n  background: rgba(255,152,0,0.07);\n  box-shadow: none;\n}"
+x-stil-netz: &stil_netz
+  style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(33,150,243,0.28);\n  background: rgba(33,150,243,0.07);\n  box-shadow: none;\n}"
+x-stil-geraet: &stil_geraet
+  style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(156,39,176,0.28);\n  background: rgba(156,39,176,0.07);\n  box-shadow: none;\n}"
+
+views:
+  # =====================================================================
+  # 1. Balkonkraftwerk
+  # =====================================================================
+  - title: Balkonkraftwerk
+    path: balkonkraftwerk
+    icon: mdi:solar-power-variant
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        title: Jetzt
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Erzeugung jetzt
+            secondary: "{{ states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power') | float(0) | round(0) }} W"
+            icon: mdi:solar-power-variant
+            icon_color: "{{ 'orange' if states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power') | float(0) > 5 else 'grey' }}"
+            entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-template-card
+            primary: Hausverbrauch jetzt
+            secondary: "{{ states('sensor.hausverbrauch_leistung') }} W"
+            icon: mdi:home-lightning-bolt
+            icon_color: blue
+            entity: sensor.hausverbrauch_leistung
+            fill_container: true
+            card_mod: *stil_pv
+          - type: gauge
+            entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power
+            name: PV-Leistung
+            unit: W
+            min: 0
+            max: 800
+            needle: true
+            severity:
+              green: 300
+              yellow: 50
+              red: 0
+            grid_options:
+              columns: 12
+            card_mod: *stil_pv
+
+      - type: grid
+        title: Ertrag & Ersparnis
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_erzeugung_heute
+            name: Heute
+            icon_color: orange
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_ersparnis_heute
+            name: Ersparnis heute
+            icon_color: green
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_erzeugung_woche
+            name: Woche
+            icon_color: orange
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_erzeugung_monat
+            name: Monat
+            icon_color: orange
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_ersparnis_monat
+            name: Ersparnis Monat
+            icon_color: green
+            fill_container: true
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_eigenverbrauchsquote_heute
+            name: Eigenverbrauch
+            icon_color: teal
+            fill_container: true
+            card_mod: *stil_pv
+
+      - type: grid
+        title: Anlage
+        cards:
+          - type: entities
+            title: Messwerte Steckdose
+            show_header_toggle: false
+            entities:
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_voltage
+                name: Spannung
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_current
+                name: Strom
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+                name: Zählerstand gesamt
+              - entity: sensor.autarkiegrad_heute
+                name: Autarkiegrad heute
+            grid_options:
+              columns: 12
+            card_mod: *stil_pv
+
+      - type: grid
+        title: Verlauf
+        column_span: 3
+        cards:
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: PV-Erzeugung und Verbrauch – 48 Stunden
+              show_states: true
+              colorize_states: true
+            graph_span: 48h
+            update_interval: 5min
+            now:
+              show: true
+              label: Jetzt
+            yaxis:
+              - id: watt
+                min: 0
+                decimals: 0
+                apex_config:
+                  title:
+                    text: Leistung (W)
+            series:
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power
+                name: PV
+                yaxis_id: watt
+                type: area
+                color: "#ff9800"
+                opacity: 0.35
+                stroke_width: 2
+                extend_to: now
+                group_by:
+                  duration: 10min
+                  func: avg
+              - entity: sensor.hausverbrauch_leistung
+                name: Hausverbrauch
+                yaxis_id: watt
+                type: line
+                color: "#2196f3"
+                stroke_width: 2
+                extend_to: now
+                group_by:
+                  duration: 10min
+                  func: avg
+            apex_config:
+              chart:
+                height: 320
+              legend:
+                show: true
+                position: top
+              tooltip:
+                shared: true
+                intersect: false
+            grid_options:
+              columns: full
+            card_mod: *stil_pv
+
+          - type: statistics-graph
+            title: Tagesertrag – 30 Tage
+            entities:
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+                name: PV
+            stat_types:
+              - change
+            chart_type: bar
+            period: day
+            days_to_show: 30
+            unit: kWh
+            grid_options:
+              columns: full
+            card_mod: *stil_pv
+
+          - type: statistics-graph
+            title: Monatsertrag – 12 Monate
+            entities:
+              - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
+                name: PV
+            stat_types:
+              - change
+            chart_type: bar
+            period: month
+            days_to_show: 365
+            unit: kWh
+            grid_options:
+              columns: full
+            card_mod: *stil_pv
+
+  # =====================================================================
+  # 2. Stromzähler
+  # =====================================================================
+  - title: Stromzähler
+    path: stromzaehler
+    icon: mdi:meter-electric
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        title: Jetzt
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Netz
+            secondary: >
+              {% set p = states('sensor.bitshake_smartmeterreader_lk13be_power') | float(0) %}
+              {{ p | abs | round(0) }} W {{ 'Bezug' if p >= 0 else 'Einspeisung' }}
+            icon: mdi:transmission-tower
+            icon_color: "{{ 'blue' if states('sensor.bitshake_smartmeterreader_lk13be_power') | float(0) >= 0 else 'green' }}"
+            entity: sensor.bitshake_smartmeterreader_lk13be_power
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: sensor.stromkosten_heute
+            name: Kosten heute
+            icon_color: red
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: sensor.netz_bezug_tag
+            name: Bezug heute
+            icon: mdi:transmission-tower-import
+            icon_color: blue
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: sensor.stromkosten_monat
+            name: Kosten Monat
+            icon_color: red
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: sensor.netz_bezug_monat
+            name: Bezug Monat
+            icon: mdi:transmission-tower-import
+            icon_color: blue
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: sensor.netz_einspeisung_monat
+            name: Einspeisung Monat
+            icon: mdi:transmission-tower-export
+            icon_color: green
+            fill_container: true
+            card_mod: *stil_netz
+
+      - type: grid
+        title: Phasen
+        cards:
+          - type: entities
+            title: Leistung · Spannung · Strom
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Leistung
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+                name: L1
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+                name: L2
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+                name: L3
+              - type: section
+                label: Spannung
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr
+                name: L1
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l2_curr
+                name: L2
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l3_curr
+                name: L3
+              - type: section
+                label: Strom
+              - entity: sensor.bitshake_smartmeterreader_lk13be_curr_l1
+                name: L1
+              - entity: sensor.bitshake_smartmeterreader_lk13be_curr_l2
+                name: L2
+              - entity: sensor.bitshake_smartmeterreader_lk13be_curr_l3
+                name: L3
+              - type: section
+                label: Netz
+              - entity: sensor.bitshake_smartmeterreader_lk13be_hz
+                name: Frequenz
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+
+      - type: grid
+        title: Zählerstände
+        cards:
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.bitshake_smartmeterreader_lk13be_importactive
+                name: Bezug gesamt (1.8.0)
+              - entity: sensor.bitshake_smartmeterreader_lk13be_exportactive
+                name: Einspeisung gesamt (2.8.0)
+              - entity: input_number.strompreis_cent
+                name: Strompreis
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+
+      - type: grid
+        title: Verlauf
+        column_span: 3
+        cards:
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Leistung je Phase – 24 Stunden
+              show_states: true
+              colorize_states: true
+            graph_span: 24h
+            update_interval: 2min
+            now:
+              show: true
+              label: Jetzt
+            yaxis:
+              - id: watt
+                decimals: 0
+                apex_config:
+                  title:
+                    text: Leistung (W)
+            series:
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+                name: L1
+                yaxis_id: watt
+                stroke_width: 2
+                extend_to: now
+                group_by: {duration: 5min, func: avg}
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+                name: L2
+                yaxis_id: watt
+                stroke_width: 2
+                extend_to: now
+                group_by: {duration: 5min, func: avg}
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+                name: L3
+                yaxis_id: watt
+                stroke_width: 2
+                extend_to: now
+                group_by: {duration: 5min, func: avg}
+            apex_config:
+              chart:
+                height: 300
+              legend:
+                show: true
+                position: top
+              tooltip:
+                shared: true
+                intersect: false
+            grid_options:
+              columns: full
+            card_mod: *stil_netz
+
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Netzspannung – 24 Stunden
+              show_states: true
+            graph_span: 24h
+            update_interval: 5min
+            yaxis:
+              - id: volt
+                min: 220
+                max: 250
+                decimals: 1
+                apex_config:
+                  title:
+                    text: Spannung (V)
+            series:
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr
+                name: L1
+                yaxis_id: volt
+                stroke_width: 1
+                group_by: {duration: 10min, func: avg}
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l2_curr
+                name: L2
+                yaxis_id: volt
+                stroke_width: 1
+                group_by: {duration: 10min, func: avg}
+              - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l3_curr
+                name: L3
+                yaxis_id: volt
+                stroke_width: 1
+                group_by: {duration: 10min, func: avg}
+            apex_config:
+              chart:
+                height: 240
+              annotations:
+                yaxis:
+                  - y: 230
+                    borderColor: grey
+                    strokeDashArray: 4
+                    label:
+                      text: Nenn 230 V
+            grid_options:
+              columns: full
+            card_mod: *stil_netz
+
+          - type: statistics-graph
+            title: Netzbezug pro Tag – 30 Tage
+            entities:
+              - entity: sensor.bitshake_smartmeterreader_lk13be_importactive
+                name: Bezug
+              - entity: sensor.bitshake_smartmeterreader_lk13be_exportactive
+                name: Einspeisung
+            stat_types:
+              - change
+            chart_type: bar
+            period: day
+            days_to_show: 30
+            grid_options:
+              columns: full
+            card_mod: *stil_netz
+
+  # =====================================================================
+  # 3. Steckdosen mit Messung
+  # =====================================================================
+  - title: Steckdosen
+    path: steckdosen
+    icon: mdi:power-socket-de
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        title: Entfeuchter Hobbyraum (Meross)
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: switch.merros_entfeuchter_outlet
+            name: Entfeuchter
+            tap_action:
+              action: toggle
+            icon_color: blue
+            fill_container: true
+            card_mod: *stil_geraet
+          - type: custom:mushroom-template-card
+            primary: Leistung
+            secondary: "{{ states('sensor.merros_entfeuchter_power') }} W"
+            icon: mdi:flash
+            icon_color: purple
+            entity: sensor.merros_entfeuchter_power
+            fill_container: true
+            card_mod: *stil_geraet
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.merros_entfeuchter_energy
+                name: Energie gesamt
+              - entity: sensor.merros_entfeuchter_voltage
+                name: Spannung
+              - entity: sensor.merros_entfeuchter_current
+                name: Strom
+            grid_options:
+              columns: 12
+            card_mod: *stil_geraet
+          - type: statistics-graph
+            title: Verbrauch pro Tag – 14 Tage
+            entities:
+              - entity: sensor.merros_entfeuchter_energy
+                name: Entfeuchter
+            stat_types:
+              - change
+            chart_type: bar
+            period: day
+            days_to_show: 14
+            unit: kWh
+            grid_options:
+              columns: 12
+            card_mod: *stil_geraet
