@@ -39,7 +39,11 @@ So bleibt alles in Betrieb, auch Home Assistant und der Router.
 | 1.11 | Sprechanlage | | | Last zu klein zum Messen |
 | 2.1 | Herd (3 Sicherungen) | L1 + L2 + L3 | | Drehstrom; Platten einzeln testen |
 | 2.2 | Herd (3 Sicherungen) | L1 + L2 + L3 | | Drehstrom; Platten einzeln testen |
-| 2.2 | Kochplatte (25.10. 20 Uhr) | L3 | 25.10.2026 | ca. 4,5 kW auf L3 |
+| 2.x | Herd: Platte vorne rechts | L1 | 25.10.2026 | volle Stufe ca. 2,6 kW auf L1 (23:21) |
+| 2.x | Herd: Platte vorne links | | | |
+| 2.x | Herd: Platte hinten rechts | | | |
+| 2.x | Herd: Platte hinten links | | | |
+| 2.x | Herd: Backofen | | | |
 | 2.3 | Spülmaschine | L1 | 25.10.2026 | Heizphase ca. 2,1 kW auf L1 (22:40–23:10), danach L1 ~30 W |
 | 2.4 | Garage | L3 | 25.10.2026 | Tesla einphasig 8 A ≈ 1,9 kW, konstant auf L3 seit ca. 20:45 |
 | 2.5 | Heizung, Heizkreisverteiler | | | |
