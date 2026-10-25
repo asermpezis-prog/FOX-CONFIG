@@ -7,18 +7,13 @@ Ergänzt `docs/energie-analyse-prompt.md` (Statistik-Korrektur PV) und `docs/pha
 
 - Home Assistant OS auf **fox** (192.168.178.102:8123), Config auf **hawk** unter `/mnt/fox` gemountet.
 - Repo: GitHub `asermpezis-prog/FOX-CONFIG`, Branch `main`. Claude pusht direkt nach `main`.
-- **Einspielen auf hawk:** `git pull` scheitert bei geänderten Dateien mit
-  `unable to unlink … Eingabe-/Ausgabefehler` (Netzwerk-Mount). Umweg:
+- **Einspielen: direkt auf fox**, nicht auf hawk. Im HA-Add-on SSH-Terminal (`core-ssh`):
   ```bash
-  cd /mnt/fox
-  git fetch
-  git reset --mixed origin/main
-  git show origin/main:<pfad> > <pfad>     # je geänderter Datei
-  git checkout -- <neue-datei>             # je neuer Datei
-  git status                               # muss "unverändert" sein
+  cd /config && git pull
   ```
   Danach HA: Entwicklerwerkzeuge → YAML → Konfiguration prüfen → Neu starten.
-  Offen: Mount-Art klären (`mount | grep fox`) und Option suchen, damit `git pull` direkt geht.
+  Auf hawk unter `/mnt/fox` scheitert `git pull` bei geänderten Dateien (`unable to unlink`,
+  Netzwerk-Mount) – dort nur lesen.
 
 ## Stromzähler
 
@@ -85,12 +80,12 @@ Ergänzt `docs/energie-analyse-prompt.md` (Statistik-Korrektur PV) und `docs/pha
 
 ## Offen (nächste Session)
 
-1. Restliche Stromkreise mit dem Wasserkocher testen: 1.1–1.4, 1.6–1.10, 2.5 Heizung, 2.6 Waschmaschine,
-   2.7 Trockner → `docs/phasenplan.md` und Markdown-Karte „Phasenbelegung“ im Dashboard ergänzen.
-2. **Entfeuchter Hobbyraum:** Meross-Steckdose zeigte alle Sensoren „Nicht verfügbar“ (offline?).
-   Sensor-IDs `sensor.merros_entfeuchter_power/_energy/_voltage/_current` sind **angenommen**, im Dashboard
+1. Nur noch große Verbraucher testen: 2.6 Waschmaschine, 2.7 Trockner (Phase?) → `docs/phasenplan.md`
+   und Markdown-Karte „Phasenbelegung“ ergänzen. Übrige Räume nicht nötig (kleine Lasten).
+2. **Entfeuchter Hobbyraum:** Meross „Merros-Hobbyraum“ war ausgesteckt, seit 25.10. 23:40 wieder online
+   (Signal 96 %). Sensor-IDs `sensor.merros_entfeuchter_power/_energy/_voltage/_current` sind **angenommen**, im Dashboard
    (Reiter Steckdosen) prüfen und ggf. korrigieren.
-3. Mount `/mnt/fox` so einbinden, dass `git pull` funktioniert (oder Git-Pull-Add-on in HA nutzen).
+3. ~~Mount-Problem~~ gelöst: `git pull` im SSH-Add-on auf fox funktioniert.
 4. Optional: Tesla-Integration (Ladeleistung, Ladestand, kWh je Ladevorgang, Solar-Laden im Sommer).
 5. Optional: Statistik-Prüfungen aus `docs/energie-analyse-prompt.md` (Aufgaben 2–5).
 
