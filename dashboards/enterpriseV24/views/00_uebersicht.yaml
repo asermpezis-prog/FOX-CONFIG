@@ -221,6 +221,34 @@ sections:
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
   column_span: 3
 - type: grid
+  title: 📷 Kameras
+  column_span: 3
+  cards:
+  - type: picture-entity
+    entity: camera.tapo_c310_mainstream
+    name: Technikraum (Tapo)
+    camera_view: auto
+    aspect_ratio: '16:9'
+    show_name: true
+    show_state: true
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/kameras
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+  - type: picture-entity
+    entity: camera.parking_standardauflosung
+    name: Garten (Reolink)
+    camera_view: auto
+    aspect_ratio: '16:9'
+    show_name: true
+    show_state: true
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/kameras
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+- type: grid
   title: ⬇️ Keller
   column_span: 3
   cards:

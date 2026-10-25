@@ -86,12 +86,42 @@ cards:
 - type: vertical-stack
   title: 🌳 Garten
   cards:
-  - type: markdown
-    content: '**Bereich vorbereitet**
-
-      Noch keine Geräte im Garten vorhanden.
-
-      '
+  - type: picture-entity
+    title: Reolink Livebild
+    entity: camera.parking_standardauflosung
+    camera_view: live
+    aspect_ratio: '16:9'
+    show_name: true
+    show_state: true
     card_mod:
-      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
-        \  box-shadow: none;\n}"
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n  box-shadow: none;\n}"
+  - type: entities
+    title: Erkennung
+    show_header_toggle: false
+    entities:
+    - entity: binary_sensor.parking_person
+      name: Person
+    - entity: binary_sensor.parking_fahrzeug
+      name: Fahrzeug
+    - entity: binary_sensor.parking_tier
+      name: Tier
+    - entity: binary_sensor.parking_bewegung
+      name: Bewegung
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n  box-shadow: none;\n}"
+  - type: entities
+    title: Steuerung
+    show_header_toggle: false
+    entities:
+    - entity: light.parking_scheinwerfer
+      name: Scheinwerfer
+    - entity: switch.parking_infrarotlicht_im_nachtmodus
+      name: Infrarotlicht im Nachtmodus
+    - entity: switch.parking_aufzeichnen
+      name: Aufzeichnung
+    - entity: switch.parking_push_benachrichtigungen
+      name: Push-Benachrichtigungen
+    - entity: switch.parking_audio_aufnehmen
+      name: Audio aufnehmen
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n  box-shadow: none;\n}"
