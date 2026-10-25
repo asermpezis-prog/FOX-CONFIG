@@ -30,7 +30,7 @@ So bleibt alles in Betrieb, auch Home Assistant und der Router.
 | 1.2 | Büro, Gang | | | |
 | 1.3 | Hobbyraum | | | Entfeuchter (Meross) |
 | 1.4 | Windfang, WC | | | |
-| 1.5 | Küche, Esszimmer | | | |
+| 1.5 | Küche, Esszimmer | L2 | 25.10.2026 | Wasserkocher Küche: L2 +1,8 kW (23:17) |
 | 1.6 | Wohnzimmer | | | |
 | 1.7 | Badezimmer | | | |
 | 1.8 | Schlafzimmer | | | |
@@ -41,7 +41,7 @@ So bleibt alles in Betrieb, auch Home Assistant und der Router.
 | 2.2 | Herd (3 Sicherungen) | L1 + L2 + L3 | | Drehstrom; Platten einzeln testen |
 | 2.2 | Kochplatte (25.10. 20 Uhr) | L3 | 25.10.2026 | ca. 4,5 kW auf L3 |
 | 2.3 | Spülmaschine | L3 ? | 25.10.2026 | ca. 2 kW auf L3, bestätigen nach Programmende |
-| 2.4 | Garage | L1 ? | 25.10.2026 | Tesla lädt einphasig 8 A ≈ 1,9 kW auf L1 |
+| 2.4 | Garage | L1 | 25.10.2026 | Tesla einphasig 8 A ≈ 1,9 kW auf L1; Ladeende ca. 23:10 → L1 fällt auf ~30 W |
 | 2.5 | Heizung, Heizkreisverteiler | | | |
 | 2.6 | Waschmaschine | | | in der Heizphase messen |
 | 2.7 | Trockner | | | |
