@@ -260,6 +260,50 @@ views:
       - type: grid
         title: Phasen
         cards:
+          - type: custom:mushroom-template-card
+            primary: "L1 · {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l1') | float(0) | round(0) }} W · {{ states('sensor.bitshake_smartmeterreader_lk13be_curr_l1') | float(0) | round(1) }} A"
+            secondary: Spülmaschine · Herdplatten rechts
+            icon: mdi:sine-wave
+            icon_color: "{{ 'red' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l1') | float(0) > 13 else ('amber' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l1') | float(0) > 8 else 'orange') }}"
+            entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+          - type: custom:mushroom-template-card
+            primary: "L2 · {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l2') | float(0) | round(0) }} W · {{ states('sensor.bitshake_smartmeterreader_lk13be_curr_l2') | float(0) | round(1) }} A"
+            secondary: Küche/Esszimmer · Herdplatten links · Grundlast
+            icon: mdi:sine-wave
+            icon_color: "{{ 'red' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l2') | float(0) > 13 else ('amber' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l2') | float(0) > 8 else 'blue') }}"
+            entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+          - type: custom:mushroom-template-card
+            primary: "L3 · {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l3') | float(0) | round(0) }} W · {{ states('sensor.bitshake_smartmeterreader_lk13be_curr_l3') | float(0) | round(1) }} A"
+            secondary: Garage/Tesla · Backofen
+            icon: mdi:sine-wave
+            icon_color: "{{ 'red' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l3') | float(0) > 13 else ('amber' if states('sensor.bitshake_smartmeterreader_lk13be_curr_l3') | float(0) > 8 else 'red') }}"
+            entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+          - type: markdown
+            title: Phasenbelegung (gemessen 25.10.2026)
+            content: |
+              | Phase | Stromkreise / Geräte |
+              |---|---|
+              | **L1** | 2.3 Spülmaschine · Herdplatten rechts (vorne ~2,6 kW, hinten ~0,9 kW) |
+              | **L2** | 1.5 Küche/Esszimmer · Herdplatten links (vorne ~1,0 kW, hinten ~1,15 kW) · Grundlast |
+              | **L3** | 2.4 Garage (Tesla 8 A ≈ 1,9 kW) · Backofen ~2,1 kW |
+              | offen | 1.1–1.4, 1.6–1.11, 2.5–2.7 |
+
+              Hausanschluss 35 A je Phase · Stromkreise B16 · Details: `docs/phasenplan.md`
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
           - type: entities
             title: Leistung · Spannung · Strom
             show_header_toggle: false
@@ -267,11 +311,11 @@ views:
               - type: section
                 label: Leistung
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
-                name: L1
+                name: L1 · Spülmaschine, Herd rechts
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
-                name: L2
+                name: L2 · Küche, Herd links, Grundlast
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
-                name: L3
+                name: L3 · Garage/Tesla, Backofen
               - type: section
                 label: Spannung
               - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr
@@ -336,19 +380,19 @@ views:
                     text: Leistung (W)
             series:
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
-                name: L1
+                name: L1 · Spülm./Herd re.
                 yaxis_id: watt
                 curve: stepline
                 stroke_width: 3
                 extend_to: now
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
-                name: L2
+                name: L2 · Küche/Herd li.
                 yaxis_id: watt
                 curve: stepline
                 stroke_width: 3
                 extend_to: now
               - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
-                name: L3
+                name: L3 · Tesla/Backofen
                 yaxis_id: watt
                 curve: stepline
                 stroke_width: 3
