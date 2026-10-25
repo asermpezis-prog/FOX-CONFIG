@@ -313,6 +313,69 @@ views:
             card_mod: *stil_netz
 
       - type: grid
+        title: Phasentest
+        column_span: 3
+        cards:
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Phasentest – letzte 15 Minuten
+              show_states: true
+              colorize_states: true
+            graph_span: 15min
+            update_interval: 10s
+            now:
+              show: true
+              label: Jetzt
+            yaxis:
+              - id: watt
+                min: 0
+                decimals: 0
+                apex_config:
+                  title:
+                    text: Leistung (W)
+            series:
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+                name: L1
+                yaxis_id: watt
+                curve: stepline
+                stroke_width: 3
+                extend_to: now
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+                name: L2
+                yaxis_id: watt
+                curve: stepline
+                stroke_width: 3
+                extend_to: now
+              - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+                name: L3
+                yaxis_id: watt
+                curve: stepline
+                stroke_width: 3
+                extend_to: now
+            apex_config:
+              chart:
+                height: 280
+              legend:
+                show: true
+                position: top
+              tooltip:
+                shared: true
+                intersect: false
+            grid_options:
+              columns: full
+            card_mod: *stil_netz
+          - type: markdown
+            content: >
+              **So testest du einen Stromkreis:** Wasserkocher (ca. 2 kW) in eine Steckdose
+              des Raums stecken und einschalten. Nach 20–30 s springt eine Phase um ca. 2.000 W.
+              Ergebnis in `docs/phasenplan.md` eintragen.
+              **Nicht abschalten:** 1.1 Technikraum, 2.4 Garage beim Laden.
+            grid_options:
+              columns: full
+            card_mod: *stil_netz
+
+      - type: grid
         title: Verlauf
         column_span: 3
         cards:
