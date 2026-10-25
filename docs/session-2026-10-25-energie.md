@@ -86,7 +86,9 @@ Ergänzt `docs/energie-analyse-prompt.md` (Statistik-Korrektur PV) und `docs/pha
    (Signal 96 %). Sensor-IDs `sensor.merros_entfeuchter_power/_energy/_voltage/_current` sind **angenommen**, im Dashboard
    (Reiter Steckdosen) prüfen und ggf. korrigieren.
 3. ~~Mount-Problem~~ gelöst: `git pull` im SSH-Add-on auf fox funktioniert.
-4. Optional: Tesla-Integration (Ladeleistung, Ladestand, kWh je Ladevorgang, Solar-Laden im Sommer).
+4. Tesla-Integration: eigene Session, Startprompt in `docs/tesla-integration-prompt.md`.
+6. Automation „Entfeuchter im Keller automatisch steuern“: Outlet schaltete am 25.10. um 23:36 und 23:41
+   im Sekundentakt ein/aus – prüfen, ob manuell oder Flattern der Automation.
 5. Optional: Statistik-Prüfungen aus `docs/energie-analyse-prompt.md` (Aufgaben 2–5).
 
 ## Arbeitsregeln (vom Nutzer)
