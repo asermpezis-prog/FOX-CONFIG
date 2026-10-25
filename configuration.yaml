@@ -44,7 +44,7 @@ lovelace:
       type: module
     - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
       type: module
-    - url: /local/ha-devices-card.js?v=109
+    - url: /local/ha-devices-card.js?v=110
       type: module
 
   dashboards:

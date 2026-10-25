@@ -131,7 +131,7 @@ ha-card {
     try {
       const deviceFile = await this.loadJson("/local/core.device_registry.json");
       const entityFile = await this.loadJson("/local/core.entity_registry.json");
-      const entryFile = await this.loadJson("/local/core.config_entries.json");
+      const entryFile = await this.loadJson("/local/core.config_entries.json").catch(() => ({ data: { entries: [] } }));
 
       const devices = deviceFile.data.devices || [];
       const entities = entityFile.data.entities || [];
