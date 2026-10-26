@@ -193,361 +193,407 @@ sections:
         \ %}\n      rgba(76,175,80,0.10)\n    {% endif %};\n}"
   column_span: 3
 - type: grid
-  title: ⚡ Energie & PV
   column_span: 3
   cards:
-  - type: custom:mushroom-template-card
-    primary: Balkonkraftwerk
-    secondary: "{{ states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.pv_erzeugung_heute')|float(0)|round(2) }} kWh"
-    icon: mdi:solar-power-variant
-    multiline_secondary: true
-    fill_container: true
-    icon_color: amber
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-energie-pv
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Hausverbrauch
-    secondary: "{{ states('sensor.hausverbrauch_leistung')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.hausverbrauch_heute')|float(0)|round(1) }} kWh"
-    icon: mdi:home-lightning-bolt
-    multiline_secondary: true
-    fill_container: true
-    icon_color: blue
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-energie-pv
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Netzbezug heute
-    secondary: "{{ states('sensor.netz_bezug_tag')|float(0)|round(2) }} kWh\nKosten: {{ states('sensor.stromkosten_heute')|float(0)|round(2) }} €"
-    icon: mdi:transmission-tower
-    multiline_secondary: true
-    fill_container: true
-    icon_color: red
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-energie-pv
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Autarkie heute
-    secondary: "{{ states('sensor.autarkiegrad_heute')|float(0)|round(0) }} %\nPV-Ersparnis: {{ states('sensor.pv_ersparnis_heute')|float(0)|round(2) }} €"
-    icon: mdi:leaf
-    multiline_secondary: true
-    fill_container: true
-    icon_color: green
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-energie-pv
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-- type: grid
-  title: 📷 Kameras
-  column_span: 3
-  cards:
-  - type: vertical-stack
+  - type: custom:expander-card
+    title: "⚡ Energie & PV"
+    expanded: false
     grid_options:
       columns: 24
     cards:
-    - type: picture-entity
-      entity: camera.tapo_c310_mainstream
-      name: Technikraum (Tapo)
-      camera_view: auto
-      aspect_ratio: '16:9'
-      show_name: true
-      show_state: true
-      tap_action:
-        action: navigate
-        navigation_path: /dashboard-enterprisev24/kameras
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-    - type: custom:mushroom-template-card
-      primary: Technikraum (Tapo)
-      secondary: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}Erkennung: {{ '🔴 Person' if pe else ('🟠 Bewegung' if be else '🟢 keine') }} · Heute 👤 {{ states('counter.kamera_tapo_personen_heute') if states('counter.kamera_tapo_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_tapo_bewegungen_heute') if states('counter.kamera_tapo_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_tapo_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_tapo_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
-      icon: mdi:cctv
-      icon_color: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}{{ 'red' if (pe) else ('orange' if be else 'green') }}"
-      multiline_secondary: true
-      tap_action:
-        action: navigate
-        navigation_path: /dashboard-enterprisev24/kameras
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-  - type: vertical-stack
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Balkonkraftwerk
+            secondary: "{{ states('sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_power')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.pv_erzeugung_heute')|float(0)|round(2) }} kWh"
+            icon: mdi:solar-power-variant
+            multiline_secondary: true
+            fill_container: true
+            icon_color: amber
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Hausverbrauch
+            secondary: "{{ states('sensor.hausverbrauch_leistung')|float(0)|round(0) }} W jetzt\nHeute: {{ states('sensor.hausverbrauch_heute')|float(0)|round(1) }} kWh"
+            icon: mdi:home-lightning-bolt
+            multiline_secondary: true
+            fill_container: true
+            icon_color: blue
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Netzbezug heute
+            secondary: "{{ states('sensor.netz_bezug_tag')|float(0)|round(2) }} kWh\nKosten: {{ states('sensor.stromkosten_heute')|float(0)|round(2) }} €"
+            icon: mdi:transmission-tower
+            multiline_secondary: true
+            fill_container: true
+            icon_color: red
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Autarkie heute
+            secondary: "{{ states('sensor.autarkiegrad_heute')|float(0)|round(0) }} %\nPV-Ersparnis: {{ states('sensor.pv_ersparnis_heute')|float(0)|round(2) }} €"
+            icon: mdi:leaf
+            multiline_secondary: true
+            fill_container: true
+            icon_color: green
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+- type: grid
+  column_span: 3
+  cards:
+  - type: custom:expander-card
+    title: "📷 Kameras"
+    expanded: false
     grid_options:
       columns: 24
     cards:
-    - type: picture-entity
-      entity: camera.parking_standardauflosung
-      name: Garten (Reolink)
-      camera_view: auto
-      aspect_ratio: '16:9'
-      show_name: true
-      show_state: true
-      tap_action:
-        action: navigate
-        navigation_path: /dashboard-enterprisev24/kameras
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-    - type: custom:mushroom-template-card
-      primary: Garten (Reolink)
-      secondary: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}Erkennung: {{ '🔴 Person' if pe else ('🔴 Fahrzeug' if o0 else ('🔴 Tier' if o1 else ('🟠 Bewegung' if be else '🟢 keine'))) }} · Heute 👤 {{ states('counter.kamera_reolink_personen_heute') if states('counter.kamera_reolink_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_reolink_bewegungen_heute') if states('counter.kamera_reolink_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_reolink_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_reolink_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
-      icon: mdi:cctv
-      icon_color: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}{{ 'red' if (pe or o0 or o1) else ('orange' if be else 'green') }}"
-      multiline_secondary: true
-      tap_action:
-        action: navigate
-        navigation_path: /dashboard-enterprisev24/kameras
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+      - type: vertical-stack
+        cards:
+        - type: picture-entity
+          entity: camera.tapo_c310_mainstream
+          name: Technikraum (Tapo)
+          camera_view: auto
+          aspect_ratio: '16:9'
+          show_name: true
+          show_state: true
+          tap_action:
+            action: navigate
+            navigation_path: /dashboard-enterprisev24/kameras
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+        - type: custom:mushroom-template-card
+          primary: Technikraum (Tapo)
+          secondary: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}Erkennung: {{ '🔴 Person' if pe else ('🟠 Bewegung' if be else '🟢 keine') }} · Heute 👤 {{ states('counter.kamera_tapo_personen_heute') if states('counter.kamera_tapo_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_tapo_bewegungen_heute') if states('counter.kamera_tapo_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_tapo_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_tapo_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
+          icon: mdi:cctv
+          icon_color: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}{{ 'red' if (pe) else ('orange' if be else 'green') }}"
+          multiline_secondary: true
+          tap_action:
+            action: navigate
+            navigation_path: /dashboard-enterprisev24/kameras
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+      - type: vertical-stack
+        cards:
+        - type: picture-entity
+          entity: camera.parking_standardauflosung
+          name: Garten (Reolink)
+          camera_view: auto
+          aspect_ratio: '16:9'
+          show_name: true
+          show_state: true
+          tap_action:
+            action: navigate
+            navigation_path: /dashboard-enterprisev24/kameras
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+        - type: custom:mushroom-template-card
+          primary: Garten (Reolink)
+          secondary: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}Erkennung: {{ '🔴 Person' if pe else ('🔴 Fahrzeug' if o0 else ('🔴 Tier' if o1 else ('🟠 Bewegung' if be else '🟢 keine'))) }} · Heute 👤 {{ states('counter.kamera_reolink_personen_heute') if states('counter.kamera_reolink_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_reolink_bewegungen_heute') if states('counter.kamera_reolink_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_reolink_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_reolink_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
+          icon: mdi:cctv
+          icon_color: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}{{ 'red' if (pe or o0 or o1) else ('orange' if be else 'green') }}"
+          multiline_secondary: true
+          tap_action:
+            action: navigate
+            navigation_path: /dashboard-enterprisev24/kameras
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
 - type: grid
-  title: ⬇️ Keller
   column_span: 3
   cards:
-  - type: custom:mushroom-template-card
-    primary: Technikraum
-    secondary: '🌡 {{ states(''sensor.0xf044d3fffef6dcf0_temperature'') }} °C
+  - type: custom:expander-card
+    title: "⬇️ Keller"
+    expanded: false
+    grid_options:
+      columns: 24
+    cards:
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Technikraum
+            secondary: '🌡 {{ states(''sensor.0xf044d3fffef6dcf0_temperature'') }} °C
 
-      💧 {{ states(''sensor.0xf044d3fffef6dcf0_humidity'') }} %
+              💧 {{ states(''sensor.0xf044d3fffef6dcf0_humidity'') }} %
 
-      🖥️ HAOS Steckdose · 🔌 Entfeuchter {{ ''an'' if is_state(''switch.schlafzimmer_merros_schlafzimmer_outlet'',''on'') else
-      ''aus'' }}'
-    icon: mdi:server
-    multiline_secondary: true
-    fill_container: true
-    icon_color: blue
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/technikraum
-    card_mod:
-      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Büro
-    secondary: '🌡 {{ states(''sensor.0x983268fffe9b883c_temperature'') }} °C
+              🖥️ HAOS Steckdose · 🔌 Entfeuchter {{ ''an'' if is_state(''switch.schlafzimmer_merros_schlafzimmer_outlet'',''on'') else
+              ''aus'' }}'
+            icon: mdi:server
+            multiline_secondary: true
+            fill_container: true
+            icon_color: blue
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/technikraum
+            card_mod:
+              style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Büro
+            secondary: '🌡 {{ states(''sensor.0x983268fffe9b883c_temperature'') }} °C
 
-      💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
-    icon: mdi:desk
-    multiline_secondary: true
-    fill_container: true
-    icon_color: brown
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/buero
-    card_mod:
-      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Hobbyraum
-    secondary: '🌡 {{ states(''sensor.0xe456acfffe5bf40e_temperature'') }} °C
+              💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
+            icon: mdi:desk
+            multiline_secondary: true
+            fill_container: true
+            icon_color: brown
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/buero
+            card_mod:
+              style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Hobbyraum
+            secondary: '🌡 {{ states(''sensor.0xe456acfffe5bf40e_temperature'') }} °C
 
-      💧 {{ states(''sensor.0xe456acfffe5bf40e_humidity'') }} %
+              💧 {{ states(''sensor.0xe456acfffe5bf40e_humidity'') }} %
 
-      🔌 Entfeuchter {{ ''an'' if is_state(''switch.merros_entfeuchter_outlet'',''on'') else ''aus'' }}'
-    icon: mdi:controller-classic
-    multiline_secondary: true
-    fill_container: true
-    icon_color: purple
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/hobbyraum
-    card_mod:
-      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Flur
-    secondary: Keine Geräte
+              🔌 Entfeuchter {{ ''an'' if is_state(''switch.merros_entfeuchter_outlet'',''on'') else ''aus'' }}'
+            icon: mdi:controller-classic
+            multiline_secondary: true
+            fill_container: true
+            icon_color: purple
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/hobbyraum
+            card_mod:
+              style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Flur
+            secondary: Keine Geräte
 
-      💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
-    icon: mdi:door
-    multiline_secondary: true
-    fill_container: true
-    icon_color: grey
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/flur
-    card_mod:
-      style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+              💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
+            icon: mdi:door
+            multiline_secondary: true
+            fill_container: true
+            icon_color: grey
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/flur
+            card_mod:
+              style: "ha-card {\n  background: rgba(63,81,181,0.10);\n  border: 1px solid rgba(63,81,181,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
-  title: 🏠 Erdgeschoss
   column_span: 3
   cards:
-  - type: custom:mushroom-template-card
-    primary: Wohnzimmer
-    secondary: Fernseher
-    icon: mdi:sofa-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: green
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/wohnzimmer
-    card_mod:
-      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Küche
-    secondary: Keine Geräte
-    icon: mdi:countertop-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: green
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/kueche
-    card_mod:
-      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Windfang
-    secondary: Keine Geräte
-    icon: mdi:door-open
-    multiline_secondary: true
-    fill_container: true
-    icon_color: green
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/windfang
-    card_mod:
-      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Gäste-WC
-    secondary: Keine Geräte
-    icon: mdi:toilet
-    multiline_secondary: true
-    fill_container: true
-    icon_color: green
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/gaeste-wc
-    card_mod:
-      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:expander-card
+    title: "🏠 Erdgeschoss"
+    expanded: false
+    grid_options:
+      columns: 24
+    cards:
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Wohnzimmer
+            secondary: Fernseher
+            icon: mdi:sofa-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: green
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/wohnzimmer
+            card_mod:
+              style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Küche
+            secondary: Keine Geräte
+            icon: mdi:countertop-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: green
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/kueche
+            card_mod:
+              style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Windfang
+            secondary: Keine Geräte
+            icon: mdi:door-open
+            multiline_secondary: true
+            fill_container: true
+            icon_color: green
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/windfang
+            card_mod:
+              style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Gäste-WC
+            secondary: Keine Geräte
+            icon: mdi:toilet
+            multiline_secondary: true
+            fill_container: true
+            icon_color: green
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/gaeste-wc
+            card_mod:
+              style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
-  title: 🌳 Außen
   column_span: 3
   cards:
-  - type: custom:mushroom-template-card
-    primary: Garage
-    secondary: Balkonkraftwerk
-    icon: mdi:garage
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/garage
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Carport
-    secondary: Licht · Belegungssensor
-    icon: mdi:car
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/carport
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Garten
-    secondary: Reolink-Kamera
-    icon: mdi:tree-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/garten
-    card_mod:
-      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:expander-card
+    title: "🌳 Außen"
+    expanded: false
+    grid_options:
+      columns: 24
+    cards:
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Garage
+            secondary: Balkonkraftwerk
+            icon: mdi:garage
+            multiline_secondary: true
+            fill_container: true
+            icon_color: orange
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/garage
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Carport
+            secondary: Licht · Belegungssensor
+            icon: mdi:car
+            multiline_secondary: true
+            fill_container: true
+            icon_color: orange
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/carport
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Garten
+            secondary: Reolink-Kamera
+            icon: mdi:tree-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: orange
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/garten
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
-  title: ⬆️ 1. Etage
   column_span: 3
   cards:
-  - type: custom:mushroom-template-card
-    primary: Schlafzimmer
-    secondary: '🌡 {{ states(''sensor.0xa4c1380ac39bffff_temperature'') }} °C
+  - type: custom:expander-card
+    title: "⬆️ 1. Etage"
+    expanded: false
+    grid_options:
+      columns: 24
+    cards:
+      - type: grid
+        columns: 4
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Schlafzimmer
+            secondary: '🌡 {{ states(''sensor.0xa4c1380ac39bffff_temperature'') }} °C
 
-      💧 {{ states(''sensor.0xa4c1380ac39bffff_humidity'') }} %'
-    icon: mdi:bed-king-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: teal
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/schlafzimmer
-    card_mod:
-      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Bad
-    secondary: '🌡 {{ states(''sensor.0xa4c1380ab990ffff_temperature'') }} °C
+              💧 {{ states(''sensor.0xa4c1380ac39bffff_humidity'') }} %'
+            icon: mdi:bed-king-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: teal
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/schlafzimmer
+            card_mod:
+              style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Bad
+            secondary: '🌡 {{ states(''sensor.0xa4c1380ab990ffff_temperature'') }} °C
 
-      💧 {{ states(''sensor.0xa4c1380ab990ffff_humidity'') }} %
+              💧 {{ states(''sensor.0xa4c1380ab990ffff_humidity'') }} %
 
-      🔌 Entfeuchter {{ ''an'' if is_state(''switch.bad_merros_bad_outlet'',''on'') else ''aus'' }}'
-    icon: mdi:bathtub-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: cyan
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/bad
-    card_mod:
-      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Stavros
-    secondary: '🌡 {{ states(''sensor.stavros_klima_temperature'') }} °C
+              🔌 Entfeuchter {{ ''an'' if is_state(''switch.bad_merros_bad_outlet'',''on'') else ''aus'' }}'
+            icon: mdi:bathtub-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: cyan
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/bad
+            card_mod:
+              style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Stavros
+            secondary: '🌡 {{ states(''sensor.stavros_klima_temperature'') }} °C
 
-      💧 {{ states(''sensor.stavros_klima_humidity'') }} %'
-    icon: mdi:account-school-outline
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/stavros
-    card_mod:
-      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
-  - type: custom:mushroom-template-card
-    primary: Nikolas
-    secondary: '🌡 {{ states(''sensor.0xa4c1380f4bc2ffff_temperature'') }} °C
+              💧 {{ states(''sensor.stavros_klima_humidity'') }} %'
+            icon: mdi:account-school-outline
+            multiline_secondary: true
+            fill_container: true
+            icon_color: orange
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/stavros
+            card_mod:
+              style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Nikolas
+            secondary: '🌡 {{ states(''sensor.0xa4c1380f4bc2ffff_temperature'') }} °C
 
-      💧 {{ states(''sensor.0xa4c1380f4bc2ffff_humidity'') }} %'
-    icon: mdi:account-school
-    multiline_secondary: true
-    fill_container: true
-    icon_color: orange
-    tap_action:
-      action: navigate
-      navigation_path: /dashboard-enterprisev24/nikolas
-    card_mod:
-      style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
-        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
-        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+              💧 {{ states(''sensor.0xa4c1380f4bc2ffff_humidity'') }} %'
+            icon: mdi:account-school
+            multiline_secondary: true
+            fill_container: true
+            icon_color: orange
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-enterprisev24/nikolas
+            card_mod:
+              style: "ha-card {\n  background: rgba(156,39,176,0.09);\n  border: 1px solid rgba(156,39,176,0.28);\n  border-radius:\
+                \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+                \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"

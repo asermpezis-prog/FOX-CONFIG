@@ -32,13 +32,15 @@ utility_meter:
 lovelace:
   resource_mode: yaml
   resources:
+    - url: /hacsfiles/lovelace-expander-card/expander-card.js
+      type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524421
       type: module
     - url: /hacsfiles/apexcharts-card/apexcharts-card.js
       type: module
     - url: /hacsfiles/lovelace-mushroom/mushroom.js
       type: module
-    - url: /hacsfiles/fold-entity-row/fold-entity-row.js
+    - url: /hacsfiles/lovelace-fold-entity-row/fold-entity-row.js
       type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
