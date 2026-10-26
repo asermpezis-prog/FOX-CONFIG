@@ -256,6 +256,22 @@ views:
             entity: sensor.netz_einspeisung_monat
             fill_container: true
             card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.zeige_phasentest
+            name: Phasentest
+            icon: mdi:chart-line
+            tap_action:
+              action: toggle
+            fill_container: true
+            card_mod: *stil_netz
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.zeige_verlauf
+            name: Verlauf
+            icon: mdi:chart-line
+            tap_action:
+              action: toggle
+            fill_container: true
+            card_mod: *stil_netz
 
       - type: grid
         title: Phasen
@@ -290,20 +306,25 @@ views:
             grid_options:
               columns: 12
             card_mod: *stil_netz
-          - type: markdown
-            title: Phasenbelegung (gemessen 25.10.2026)
-            content: |
-              | Phase | Stromkreise / Geräte |
-              |---|---|
-              | **L1** | 2.3 Spülmaschine · Herdplatten rechts (vorne ~2,6 kW, hinten ~0,9 kW) |
-              | **L2** | 1.5 Küche/Esszimmer · Herdplatten links (vorne ~1,0 kW, hinten ~1,15 kW) · Grundlast |
-              | **L3** | 2.4 Garage (Tesla 8 A ≈ 1,9 kW) · Backofen ~2,1 kW |
-              | offen | 1.1–1.4, 1.6–1.11, 2.5–2.7 |
-
-              Hausanschluss 35 A je Phase · Stromkreise B16 · Details: `docs/phasenplan.md`
+          - type: custom:expander-card
+            title: "Phasenbelegung (gemessen 25.10.2026)"
+            expanded: false
             grid_options:
               columns: 12
-            card_mod: *stil_netz
+            cards:
+              - type: markdown
+                content: |
+                  | Phase | Stromkreise / Geräte |
+                  |---|---|
+                  | **L1** | 2.3 Spülmaschine · Herdplatten rechts (vorne ~2,6 kW, hinten ~0,9 kW) |
+                  | **L2** | 1.5 Küche/Esszimmer · Herdplatten links (vorne ~1,0 kW, hinten ~1,15 kW) · Grundlast |
+                  | **L3** | 2.4 Garage (Tesla 8 A ≈ 1,9 kW) · Backofen ~2,1 kW |
+                  | offen | 1.1–1.4, 1.6–1.11, 2.5–2.7 |
+
+                  Hausanschluss 35 A je Phase · Stromkreise B16 · Details: `docs/phasenplan.md`
+                grid_options:
+                  columns: 12
+                card_mod: *stil_netz
       - type: grid
         title: Zählerstände
         cards:
@@ -364,189 +385,197 @@ views:
       - type: grid
         column_span: 3
         cards:
-          - type: custom:expander-card
-            title: "Phasentest"
-            expanded: false
+          - type: conditional
             grid_options:
               columns: full
-            cards:
-              - type: custom:apexcharts-card
-                header:
-                  show: true
-                  title: Phasentest – letzte 15 Minuten
-                  show_states: true
-                  colorize_states: true
-                graph_span: 15min
-                update_interval: 10s
-                now:
-                  show: true
-                  label: Jetzt
-                yaxis:
-                  - id: watt
-                    min: 0
-                    decimals: 0
-                    apex_config:
-                      title:
-                        text: Leistung (W)
-                series:
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
-                    name: L1 · Spülm./Herd re.
-                    yaxis_id: watt
-                    curve: stepline
-                    stroke_width: 3
-                    extend_to: now
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
-                    name: L2 · Küche/Herd li.
-                    yaxis_id: watt
-                    curve: stepline
-                    stroke_width: 3
-                    extend_to: now
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
-                    name: L3 · Tesla/Backofen
-                    yaxis_id: watt
-                    curve: stepline
-                    stroke_width: 3
-                    extend_to: now
-                apex_config:
-                  chart:
-                    height: 280
-                  legend:
+            conditions:
+              - condition: state
+                entity: input_boolean.zeige_phasentest
+                state: "on"
+            card:
+              type: vertical-stack
+              cards:
+                - type: custom:apexcharts-card
+                  header:
                     show: true
-                    position: top
-                  tooltip:
-                    shared: true
-                    intersect: false
-                grid_options:
-                  columns: full
-                card_mod: *stil_netz
-              - type: markdown
-                content: >
-                  **So testest du einen Stromkreis:** Wasserkocher (ca. 2 kW) in eine Steckdose
-                  des Raums stecken und einschalten. Nach 20–30 s springt eine Phase um ca. 2.000 W.
-                  Ergebnis in `docs/phasenplan.md` eintragen.
-                  **Nicht abschalten:** 1.1 Technikraum, 2.4 Garage beim Laden.
-                grid_options:
-                  columns: full
-                card_mod: *stil_netz
+                    title: Phasentest – letzte 15 Minuten
+                    show_states: true
+                    colorize_states: true
+                  graph_span: 15min
+                  update_interval: 10s
+                  now:
+                    show: true
+                    label: Jetzt
+                  yaxis:
+                    - id: watt
+                      min: 0
+                      decimals: 0
+                      apex_config:
+                        title:
+                          text: Leistung (W)
+                  series:
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+                      name: L1 · Spülm./Herd re.
+                      yaxis_id: watt
+                      curve: stepline
+                      stroke_width: 3
+                      extend_to: now
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+                      name: L2 · Küche/Herd li.
+                      yaxis_id: watt
+                      curve: stepline
+                      stroke_width: 3
+                      extend_to: now
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+                      name: L3 · Tesla/Backofen
+                      yaxis_id: watt
+                      curve: stepline
+                      stroke_width: 3
+                      extend_to: now
+                  apex_config:
+                    chart:
+                      height: 280
+                    legend:
+                      show: true
+                      position: top
+                    tooltip:
+                      shared: true
+                      intersect: false
+                  grid_options:
+                    columns: full
+                  card_mod: *stil_netz
+                - type: markdown
+                  content: >
+                    **So testest du einen Stromkreis:** Wasserkocher (ca. 2 kW) in eine Steckdose
+                    des Raums stecken und einschalten. Nach 20–30 s springt eine Phase um ca. 2.000 W.
+                    Ergebnis in `docs/phasenplan.md` eintragen.
+                    **Nicht abschalten:** 1.1 Technikraum, 2.4 Garage beim Laden.
+                  grid_options:
+                    columns: full
+                  card_mod: *stil_netz
 
       - type: grid
         column_span: 3
         cards:
-          - type: custom:expander-card
-            title: "Verlauf"
-            expanded: false
+          - type: conditional
             grid_options:
               columns: full
-            cards:
-              - type: custom:apexcharts-card
-                header:
-                  show: true
-                  title: Leistung je Phase – 24 Stunden
-                  show_states: true
-                  colorize_states: true
-                graph_span: 24h
-                update_interval: 2min
-                now:
-                  show: true
-                  label: Jetzt
-                yaxis:
-                  - id: watt
-                    decimals: 0
-                    apex_config:
-                      title:
-                        text: Leistung (W)
-                series:
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
-                    name: L1
-                    yaxis_id: watt
-                    stroke_width: 2
-                    extend_to: now
-                    group_by: {duration: 5min, func: avg}
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
-                    name: L2
-                    yaxis_id: watt
-                    stroke_width: 2
-                    extend_to: now
-                    group_by: {duration: 5min, func: avg}
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
-                    name: L3
-                    yaxis_id: watt
-                    stroke_width: 2
-                    extend_to: now
-                    group_by: {duration: 5min, func: avg}
-                apex_config:
-                  chart:
-                    height: 300
-                  legend:
+            conditions:
+              - condition: state
+                entity: input_boolean.zeige_verlauf
+                state: "on"
+            card:
+              type: vertical-stack
+              cards:
+                - type: custom:apexcharts-card
+                  header:
                     show: true
-                    position: top
-                  tooltip:
-                    shared: true
-                    intersect: false
-                grid_options:
-                  columns: full
-                card_mod: *stil_netz
+                    title: Leistung je Phase – 24 Stunden
+                    show_states: true
+                    colorize_states: true
+                  graph_span: 24h
+                  update_interval: 2min
+                  now:
+                    show: true
+                    label: Jetzt
+                  yaxis:
+                    - id: watt
+                      decimals: 0
+                      apex_config:
+                        title:
+                          text: Leistung (W)
+                  series:
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l1
+                      name: L1
+                      yaxis_id: watt
+                      stroke_width: 2
+                      extend_to: now
+                      group_by: {duration: 5min, func: avg}
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l2
+                      name: L2
+                      yaxis_id: watt
+                      stroke_width: 2
+                      extend_to: now
+                      group_by: {duration: 5min, func: avg}
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_power_l3
+                      name: L3
+                      yaxis_id: watt
+                      stroke_width: 2
+                      extend_to: now
+                      group_by: {duration: 5min, func: avg}
+                  apex_config:
+                    chart:
+                      height: 300
+                    legend:
+                      show: true
+                      position: top
+                    tooltip:
+                      shared: true
+                      intersect: false
+                  grid_options:
+                    columns: full
+                  card_mod: *stil_netz
 
-              - type: custom:apexcharts-card
-                header:
-                  show: true
-                  title: Netzspannung – 24 Stunden
-                  show_states: true
-                graph_span: 24h
-                update_interval: 5min
-                yaxis:
-                  - id: volt
-                    min: 220
-                    max: 250
-                    decimals: 1
-                    apex_config:
-                      title:
-                        text: Spannung (V)
-                series:
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr
-                    name: L1
-                    yaxis_id: volt
-                    stroke_width: 1
-                    group_by: {duration: 10min, func: avg}
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l2_curr
-                    name: L2
-                    yaxis_id: volt
-                    stroke_width: 1
-                    group_by: {duration: 10min, func: avg}
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l3_curr
-                    name: L3
-                    yaxis_id: volt
-                    stroke_width: 1
-                    group_by: {duration: 10min, func: avg}
-                apex_config:
-                  chart:
-                    height: 240
-                  annotations:
-                    yaxis:
-                      - y: 230
-                        borderColor: grey
-                        strokeDashArray: 4
-                        label:
-                          text: Nenn 230 V
-                grid_options:
-                  columns: full
-                card_mod: *stil_netz
+                - type: custom:apexcharts-card
+                  header:
+                    show: true
+                    title: Netzspannung – 24 Stunden
+                    show_states: true
+                  graph_span: 24h
+                  update_interval: 5min
+                  yaxis:
+                    - id: volt
+                      min: 220
+                      max: 250
+                      decimals: 1
+                      apex_config:
+                        title:
+                          text: Spannung (V)
+                  series:
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l1_curr
+                      name: L1
+                      yaxis_id: volt
+                      stroke_width: 1
+                      group_by: {duration: 10min, func: avg}
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l2_curr
+                      name: L2
+                      yaxis_id: volt
+                      stroke_width: 1
+                      group_by: {duration: 10min, func: avg}
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_volt_l3_curr
+                      name: L3
+                      yaxis_id: volt
+                      stroke_width: 1
+                      group_by: {duration: 10min, func: avg}
+                  apex_config:
+                    chart:
+                      height: 240
+                    annotations:
+                      yaxis:
+                        - y: 230
+                          borderColor: grey
+                          strokeDashArray: 4
+                          label:
+                            text: Nenn 230 V
+                  grid_options:
+                    columns: full
+                  card_mod: *stil_netz
 
-              - type: statistics-graph
-                title: Netzbezug pro Tag – 30 Tage
-                entities:
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_importactive
-                    name: Bezug
-                  - entity: sensor.bitshake_smartmeterreader_lk13be_exportactive
-                    name: Einspeisung
-                stat_types:
-                  - change
-                chart_type: bar
-                period: day
-                days_to_show: 30
-                grid_options:
-                  columns: full
-                card_mod: *stil_netz
+                - type: statistics-graph
+                  title: Netzbezug pro Tag – 30 Tage
+                  entities:
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_importactive
+                      name: Bezug
+                    - entity: sensor.bitshake_smartmeterreader_lk13be_exportactive
+                      name: Einspeisung
+                  stat_types:
+                    - change
+                  chart_type: bar
+                  period: day
+                  days_to_show: 30
+                  grid_options:
+                    columns: full
+                  card_mod: *stil_netz
 
       # =====================================================================
       # 3. Steckdosen mit Messung

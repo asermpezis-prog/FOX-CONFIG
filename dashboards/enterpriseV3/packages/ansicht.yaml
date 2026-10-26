@@ -1,0 +1,8 @@
+# Ein-/Ausblend-Schalter für die Diagramme im Dashboard "Energie & PV" (Stromzähler)
+input_boolean:
+  zeige_phasentest:
+    name: Phasentest anzeigen
+    icon: mdi:chart-line
+  zeige_verlauf:
+    name: Verlauf anzeigen
+    icon: mdi:chart-line
