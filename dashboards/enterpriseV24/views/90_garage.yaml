@@ -1,0 +1,17 @@
+title: Garage
+path: garage
+icon: mdi:garage
+type: masonry
+cards:
+- type: vertical-stack
+  title: 🏚 Garage
+  cards:
+  - type: markdown
+    content: '**Bereich vorbereitet**
+
+      Noch keine Geräte in der Garage vorhanden.
+
+      '
+    card_mod:
+      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(139,195,74,0.28);\n  background: rgba(139,195,74,0.08);\n\
+        \  box-shadow: none;\n}"

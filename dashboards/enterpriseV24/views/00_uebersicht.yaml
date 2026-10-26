@@ -248,60 +248,60 @@ sections:
   title: 📷 Kameras
   column_span: 3
   cards:
-  - type: horizontal-stack
+  - type: vertical-stack
     grid_options:
-      columns: full
+      columns: 24
     cards:
-    - type: vertical-stack
-      cards:
-      - type: picture-entity
-        entity: camera.tapo_c310_mainstream
-        name: Technikraum (Tapo)
-        camera_view: auto
-        aspect_ratio: '16:9'
-        show_name: true
-        show_state: true
-        tap_action:
-          action: navigate
-          navigation_path: /dashboard-enterprisev24/kameras
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-template-card
-        primary: Technikraum (Tapo)
-        secondary: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}Erkennung: {{ '🔴 Person' if pe else ('🟠 Bewegung' if be else '🟢 keine') }} · Heute 👤 {{ states('counter.kamera_tapo_personen_heute') if states('counter.kamera_tapo_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_tapo_bewegungen_heute') if states('counter.kamera_tapo_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_tapo_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_tapo_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
-        icon: mdi:cctv
-        icon_color: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}{{ 'red' if (pe) else ('orange' if be else 'green') }}"
-        multiline_secondary: true
-        tap_action:
-          action: navigate
-          navigation_path: /dashboard-enterprisev24/kameras
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-    - type: vertical-stack
-      cards:
-      - type: picture-entity
-        entity: camera.parking_standardauflosung
-        name: Garten (Reolink)
-        camera_view: auto
-        aspect_ratio: '16:9'
-        show_name: true
-        show_state: true
-        tap_action:
-          action: navigate
-          navigation_path: /dashboard-enterprisev24/kameras
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-template-card
-        primary: Garten (Reolink)
-        secondary: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}Erkennung: {{ '🔴 Person' if pe else ('🔴 Fahrzeug' if o0 else ('🔴 Tier' if o1 else ('🟠 Bewegung' if be else '🟢 keine'))) }} · Heute 👤 {{ states('counter.kamera_reolink_personen_heute') if states('counter.kamera_reolink_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_reolink_bewegungen_heute') if states('counter.kamera_reolink_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_reolink_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_reolink_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
-        icon: mdi:cctv
-        icon_color: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}{{ 'red' if (pe or o0 or o1) else ('orange' if be else 'green') }}"
-        multiline_secondary: true
-        tap_action:
-          action: navigate
-          navigation_path: /dashboard-enterprisev24/kameras
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+    - type: picture-entity
+      entity: camera.tapo_c310_mainstream
+      name: Technikraum (Tapo)
+      camera_view: auto
+      aspect_ratio: '16:9'
+      show_name: true
+      show_state: true
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+    - type: custom:mushroom-template-card
+      primary: Technikraum (Tapo)
+      secondary: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}Erkennung: {{ '🔴 Person' if pe else ('🟠 Bewegung' if be else '🟢 keine') }} · Heute 👤 {{ states('counter.kamera_tapo_personen_heute') if states('counter.kamera_tapo_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_tapo_bewegungen_heute') if states('counter.kamera_tapo_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_tapo_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_tapo_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
+      icon: mdi:cctv
+      icon_color: "{% set pe = is_state('binary_sensor.tapo_c310_person_detection','on') %}{% set be = is_state('binary_sensor.tapo_c310_cell_motion_detection','on') or is_state('binary_sensor.tapo_c310_motion_alarm','on') %}{{ 'red' if (pe) else ('orange' if be else 'green') }}"
+      multiline_secondary: true
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+  - type: vertical-stack
+    grid_options:
+      columns: 24
+    cards:
+    - type: picture-entity
+      entity: camera.parking_standardauflosung
+      name: Garten (Reolink)
+      camera_view: auto
+      aspect_ratio: '16:9'
+      show_name: true
+      show_state: true
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
+    - type: custom:mushroom-template-card
+      primary: Garten (Reolink)
+      secondary: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}Erkennung: {{ '🔴 Person' if pe else ('🔴 Fahrzeug' if o0 else ('🔴 Tier' if o1 else ('🟠 Bewegung' if be else '🟢 keine'))) }} · Heute 👤 {{ states('counter.kamera_reolink_personen_heute') if states('counter.kamera_reolink_personen_heute') not in ['unknown','unavailable'] else '0' }} · 🚶 {{ states('counter.kamera_reolink_bewegungen_heute') if states('counter.kamera_reolink_bewegungen_heute') not in ['unknown','unavailable'] else '0' }}\nLetzte Person: {% set t = states('input_datetime.kamera_reolink_letzte_person') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }} · Letzte Bewegung: {% set t = states('input_datetime.kamera_reolink_letzte_bewegung') %}{{ '–' if t[:4] in ['1970','unkn','unav'] else as_timestamp(t) | timestamp_custom('%d.%m. %H:%M', true) }}"
+      icon: mdi:cctv
+      icon_color: "{% set pe = is_state('binary_sensor.parking_person','on') %}{% set o0 = is_state('binary_sensor.parking_fahrzeug','on') %}{% set o1 = is_state('binary_sensor.parking_tier','on') %}{% set be = is_state('binary_sensor.parking_bewegung','on') %}{{ 'red' if (pe or o0 or o1) else ('orange' if be else 'green') }}"
+      multiline_secondary: true
+      tap_action:
+        action: navigate
+        navigation_path: /dashboard-enterprisev24/kameras
+      card_mod:
+        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(244,67,54,0.25);\n  background: rgba(244,67,54,0.07);\n  box-shadow: none;\n}"
 - type: grid
   title: ⬇️ Keller
   column_span: 3
@@ -407,20 +407,62 @@ sections:
       style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
         \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
         \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Windfang
+    secondary: Keine Geräte
+    icon: mdi:door-open
+    multiline_secondary: true
+    fill_container: true
+    icon_color: green
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/windfang
+    card_mod:
+      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Gäste-WC
+    secondary: Keine Geräte
+    icon: mdi:toilet
+    multiline_secondary: true
+    fill_container: true
+    icon_color: green
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/gaeste-wc
+    card_mod:
+      style: "ha-card {\n  background: rgba(76,175,80,0.10);\n  border: 1px solid rgba(76,175,80,0.30);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
   title: 🌳 Außen
   column_span: 3
   cards:
   - type: custom:mushroom-template-card
-    primary: Garage & Carport
-    secondary: Balkonkraftwerk · Carport-Licht
+    primary: Garage
+    secondary: Balkonkraftwerk
     icon: mdi:garage
     multiline_secondary: true
     fill_container: true
     icon_color: orange
     tap_action:
       action: navigate
-      navigation_path: /dashboard-enterprisev24/garage-carport
+      navigation_path: /dashboard-enterprisev24/garage
+    card_mod:
+      style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
+        \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\
+        \ translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+  - type: custom:mushroom-template-card
+    primary: Carport
+    secondary: Licht · Belegungssensor
+    icon: mdi:car
+    multiline_secondary: true
+    fill_container: true
+    icon_color: orange
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-enterprisev24/carport
     card_mod:
       style: "ha-card {\n  background: rgba(255,152,0,0.09);\n  border: 1px solid rgba(255,152,0,0.28);\n  border-radius:\
         \ 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform:\

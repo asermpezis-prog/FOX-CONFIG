@@ -1,0 +1,17 @@
+title: Windfang
+path: windfang
+icon: mdi:door-open
+type: masonry
+cards:
+- type: markdown
+  content: '## Windfang'
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.10);\n  box-shadow: none;\n}"
+- type: markdown
+  content: '**Bereich vorbereitet**
+
+    Noch keine Geräte im Windfang vorhanden.
+
+    '
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.10);\n  box-shadow: none;\n}"
