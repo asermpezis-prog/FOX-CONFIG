@@ -1,5 +1,5 @@
-title: Erdgeschoss
-path: erdgeschoss
+title: Wohnzimmer
+path: wohnzimmer
 icon: mdi:sofa-outline
 type: masonry
 cards:
@@ -29,28 +29,6 @@ cards:
       vorhanden sind.
 
       '
-    card_mod:
-      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
-        \  box-shadow: none;\n}"
-- type: vertical-stack
-  title: 🍳 Küche
-  cards:
-  - type: markdown
-    content: '**Bereich vorbereitet**
-
-      Noch keine Geräte in der Registry gefunden.
-
-      '
-    card_mod:
-      style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
-        \  box-shadow: none;\n}"
-  - type: entities
-    title: Tagesinfo
-    entities:
-    - type: attribute
-      entity: sun.sun
-      attribute: next_rising
-      name: Nächster Sonnenaufgang
     card_mod:
       style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(76,175,80,0.28);\n  background: rgba(76,175,80,0.08);\n\
         \  box-shadow: none;\n}"

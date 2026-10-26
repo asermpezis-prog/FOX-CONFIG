@@ -109,7 +109,9 @@
   description: Speichert Zeitpunkt und zählt Personenerkennungen.
   trigger:
     - platform: state
-      entity_id: binary_sensor.tapo_c310_person_detection
+      entity_id:
+        - binary_sensor.tapo_c310_person_detection
+        - binary_sensor.parking_person
       to: "on"
   action:
     - service: input_datetime.set_datetime
@@ -130,6 +132,7 @@
       entity_id:
         - binary_sensor.tapo_c310_cell_motion_detection
         - binary_sensor.tapo_c310_motion_alarm
+        - binary_sensor.parking_bewegung
       to: "on"
   action:
     - service: input_datetime.set_datetime
@@ -154,4 +157,91 @@
         entity_id:
           - counter.kamera_personen_heute
           - counter.kamera_bewegungen_heute
+          - counter.kamera_tapo_personen_heute
+          - counter.kamera_tapo_bewegungen_heute
+          - counter.kamera_reolink_personen_heute
+          - counter.kamera_reolink_bewegungen_heute
   mode: single
+
+- id: kamera_tapo_erkennung_zaehlen
+  alias: Kamera Tapo - Erkennung zählen
+  description: Speichert Zeitpunkt und zählt Person und Bewegung der Tapo C310 (Technikraum).
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.tapo_c310_person_detection
+      to: "on"
+      id: person
+    - trigger: state
+      entity_id:
+        - binary_sensor.tapo_c310_cell_motion_detection
+        - binary_sensor.tapo_c310_motion_alarm
+      to: "on"
+      id: bewegung
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: person
+          sequence:
+            - action: input_datetime.set_datetime
+              target:
+                entity_id: input_datetime.kamera_tapo_letzte_person
+              data:
+                timestamp: "{{ now().timestamp() }}"
+            - action: counter.increment
+              target:
+                entity_id: counter.kamera_tapo_personen_heute
+        - conditions:
+            - condition: trigger
+              id: bewegung
+          sequence:
+            - action: input_datetime.set_datetime
+              target:
+                entity_id: input_datetime.kamera_tapo_letzte_bewegung
+              data:
+                timestamp: "{{ now().timestamp() }}"
+            - action: counter.increment
+              target:
+                entity_id: counter.kamera_tapo_bewegungen_heute
+
+- id: kamera_reolink_erkennung_zaehlen
+  alias: Kamera Reolink - Erkennung zählen
+  description: Speichert Zeitpunkt und zählt Person und Bewegung der Reolink-Kamera im Garten (Gerät Parking).
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.parking_person
+      to: "on"
+      id: person
+    - trigger: state
+      entity_id:
+        - binary_sensor.parking_bewegung
+      to: "on"
+      id: bewegung
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: person
+          sequence:
+            - action: input_datetime.set_datetime
+              target:
+                entity_id: input_datetime.kamera_reolink_letzte_person
+              data:
+                timestamp: "{{ now().timestamp() }}"
+            - action: counter.increment
+              target:
+                entity_id: counter.kamera_reolink_personen_heute
+        - conditions:
+            - condition: trigger
+              id: bewegung
+          sequence:
+            - action: input_datetime.set_datetime
+              target:
+                entity_id: input_datetime.kamera_reolink_letzte_bewegung
+              data:
+                timestamp: "{{ now().timestamp() }}"
+            - action: counter.increment
+              target:
+                entity_id: counter.kamera_reolink_bewegungen_heute

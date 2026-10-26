@@ -1,0 +1,17 @@
+title: Flur
+path: flur
+icon: mdi:door
+type: masonry
+cards:
+- type: markdown
+  content: '## Flur'
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(63,81,181,0.30);\n  background: rgba(63,81,181,0.10);\n  box-shadow: none;\n}"
+- type: markdown
+  content: '**Bereich vorbereitet**
+
+    Noch keine Geräte im Flur vorhanden.
+
+    '
+  card_mod:
+    style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(63,81,181,0.30);\n  background: rgba(63,81,181,0.10);\n  box-shadow: none;\n}"

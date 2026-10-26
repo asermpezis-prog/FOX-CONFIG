@@ -5,8 +5,10 @@ views:
   - !include views/10_technikraum.yaml
   - !include views/20_buero.yaml
   - !include views/30_hobbyraum.yaml
+  - !include views/15_flur.yaml
   # Erdgeschoss
-  - !include views/80_erdgeschoss.yaml
+  - !include views/80_wohnzimmer.yaml
+  - !include views/85_kueche.yaml
   # 1. Etage
   - !include views/40_schlafzimmer.yaml
   - !include views/50_bad.yaml
@@ -14,4 +16,5 @@ views:
   - !include views/70_nikolas.yaml
   # Sicherheit / Außen
   - !include views/75_kameras.yaml
-  - !include views/90_aussenbereich.yaml
+  - !include views/90_garage_carport.yaml
+  - !include views/95_garten.yaml

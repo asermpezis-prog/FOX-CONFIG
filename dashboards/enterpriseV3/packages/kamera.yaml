@@ -1,0 +1,32 @@
+# Kamera-Helfer je Kamera (Übersicht, Sicherheit & Kameras)
+input_datetime:
+  kamera_tapo_letzte_person:
+    name: Tapo letzte Person
+    has_date: true
+    has_time: true
+  kamera_tapo_letzte_bewegung:
+    name: Tapo letzte Bewegung
+    has_date: true
+    has_time: true
+  kamera_reolink_letzte_person:
+    name: Reolink letzte Person
+    has_date: true
+    has_time: true
+  kamera_reolink_letzte_bewegung:
+    name: Reolink letzte Bewegung
+    has_date: true
+    has_time: true
+
+counter:
+  kamera_tapo_personen_heute:
+    name: Tapo Personen heute
+    step: 1
+  kamera_tapo_bewegungen_heute:
+    name: Tapo Bewegungen heute
+    step: 1
+  kamera_reolink_personen_heute:
+    name: Reolink Personen heute
+    step: 1
+  kamera_reolink_bewegungen_heute:
+    name: Reolink Bewegungen heute
+    step: 1
