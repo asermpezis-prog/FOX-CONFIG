@@ -73,6 +73,9 @@ utility_meter:
   netz_einspeisung_tag:
     source: sensor.bitshake_smartmeterreader_lk13be_exportactive
     cycle: daily
+  netz_einspeisung_woche:
+    source: sensor.bitshake_smartmeterreader_lk13be_exportactive
+    cycle: weekly
   netz_einspeisung_monat:
     source: sensor.bitshake_smartmeterreader_lk13be_exportactive
     cycle: monthly
@@ -197,6 +200,17 @@ template:
         state: >
           {% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}
           {% set einsp = states('sensor.netz_einspeisung_tag') | float(0) %}
+          {{ (([pv - einsp, 0] | max) * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}
+
+      - name: "PV Ersparnis Woche"
+        unique_id: pv_ersparnis_woche
+        unit_of_measurement: EUR
+        device_class: monetary
+        state_class: total
+        icon: mdi:piggy-bank-outline
+        state: >
+          {% set pv = states('sensor.pv_erzeugung_woche') | float(0) %}
+          {% set einsp = states('sensor.netz_einspeisung_woche') | float(0) %}
           {{ (([pv - einsp, 0] | max) * states('input_number.strompreis_cent') | float(31) / 100) | round(2) }}
 
       - name: "PV Ersparnis Monat"

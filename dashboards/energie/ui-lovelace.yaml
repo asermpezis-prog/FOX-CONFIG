@@ -57,41 +57,97 @@ views:
       - type: grid
         title: Ertrag & Ersparnis
         cards:
+          - type: heading
+            heading: Ertrag
+            heading_style: subtitle
+            icon: mdi:solar-power-variant
           - type: custom:mushroom-entity-card
             entity: sensor.pv_erzeugung_heute
             name: Heute
+            icon: mdi:solar-power-variant
             icon_color: orange
+            layout: vertical
             fill_container: true
-            card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_ersparnis_heute
-            name: Ersparnis heute
-            icon_color: green
-            fill_container: true
+            grid_options:
+              columns: 4
             card_mod: *stil_pv
           - type: custom:mushroom-entity-card
             entity: sensor.pv_erzeugung_woche
             name: Woche
+            icon: mdi:solar-power-variant
             icon_color: orange
+            layout: vertical
             fill_container: true
+            grid_options:
+              columns: 4
             card_mod: *stil_pv
           - type: custom:mushroom-entity-card
             entity: sensor.pv_erzeugung_monat
             name: Monat
+            icon: mdi:solar-power-variant
             icon_color: orange
+            layout: vertical
             fill_container: true
+            grid_options:
+              columns: 4
+            card_mod: *stil_pv
+          - type: heading
+            heading: Ersparnis
+            heading_style: subtitle
+            icon: mdi:piggy-bank-outline
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_ersparnis_heute
+            name: Heute
+            icon: mdi:piggy-bank-outline
+            icon_color: green
+            layout: vertical
+            fill_container: true
+            grid_options:
+              columns: 4
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.pv_ersparnis_woche
+            name: Woche
+            icon: mdi:piggy-bank-outline
+            icon_color: green
+            layout: vertical
+            fill_container: true
+            grid_options:
+              columns: 4
             card_mod: *stil_pv
           - type: custom:mushroom-entity-card
             entity: sensor.pv_ersparnis_monat
-            name: Ersparnis Monat
+            name: Monat
+            icon: mdi:piggy-bank
             icon_color: green
+            layout: vertical
             fill_container: true
+            grid_options:
+              columns: 4
             card_mod: *stil_pv
+          - type: heading
+            heading: Quote heute
+            heading_style: subtitle
+            icon: mdi:percent-circle-outline
           - type: custom:mushroom-entity-card
             entity: sensor.pv_eigenverbrauchsquote_heute
             name: Eigenverbrauch
+            icon: mdi:percent-circle-outline
             icon_color: teal
+            layout: vertical
             fill_container: true
+            grid_options:
+              columns: 6
+            card_mod: *stil_pv
+          - type: custom:mushroom-entity-card
+            entity: sensor.autarkiegrad_heute
+            name: Autarkie
+            icon: mdi:shield-sun-outline
+            icon_color: teal
+            layout: vertical
+            fill_container: true
+            grid_options:
+              columns: 6
             card_mod: *stil_pv
 
       - type: grid
@@ -107,8 +163,6 @@ views:
                 name: Strom
               - entity: sensor.smart_switch_23072012310265510d0a48e1e9d22d3a_energy
                 name: Zählerstand gesamt
-              - entity: sensor.autarkiegrad_heute
-                name: Autarkiegrad heute
             grid_options:
               columns: 12
             card_mod: *stil_pv
