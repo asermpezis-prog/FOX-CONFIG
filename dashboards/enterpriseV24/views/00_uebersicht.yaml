@@ -9,13 +9,6 @@ header:
   card:
     type: vertical-stack
     cards:
-    - type: markdown
-      content: '## 🧭 Enterprise
-  
-        Dein Zuhause auf einen Blick'
-      card_mod:
-        style: "ha-card {\n  border-radius: 18px;\n  background: linear-gradient(135deg,\n    rgba(33,150,243,0.10),\n    rgba(156,39,176,0.08));\n\
-          \  border: 1px solid rgba(120,120,120,0.18);\n  box-shadow: none;\n}"
     - type: grid
       columns: 2
       square: false
