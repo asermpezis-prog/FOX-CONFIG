@@ -17,111 +17,49 @@ header:
         style: "ha-card {\n  border-radius: 18px;\n  background: linear-gradient(135deg,\n    rgba(33,150,243,0.10),\n    rgba(156,39,176,0.08));\n\
           \  border: 1px solid rgba(120,120,120,0.18);\n  box-shadow: none;\n}"
     - type: grid
-      columns: 6
+      columns: 2
       square: false
       cards:
-      - type: custom:mushroom-entity-card
-        entity: switch.0xa4c13808410affff
-        name: HAOS (NUC6)
-        icon: mdi:server
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-entity-card
-        entity: switch.0xa4c138088db5ffff
-        name: Kühlschrank
-        icon: mdi:fridge-outline
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-entity-card
-        entity: switch.0xa4c1380f7434ffff
-        name: Hobbyraum
-        icon: mdi:power-socket-eu
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-entity-card
-        entity: switch.smart_switch_23080457178050510d0448e1e9d4dbcd_outlet
-        name: Desktop
-        icon: mdi:desktop-tower-monitor
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-entity-card
-        entity: switch.merros_waschmaschine_outlet
-        name: Waschmaschine
-        icon: mdi:washing-machine
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-      - type: custom:mushroom-entity-card
-        entity: switch.bad_merros_bad_outlet
-        name: Merros-2
-        icon: mdi:power-socket-eu
-        icon_color: teal
-        layout: vertical
-        tap_action:
-          action: toggle
-        fill_container: true
-        card_mod:
-          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
+        - type: entities
+          title: Steckdosen
+          state_color: true
+          show_header_toggle: false
+          entities:
+            - entity: switch.0xa4c13808410affff
+              name: HAOS (NUC6)
+              icon: mdi:server
+            - entity: switch.0xa4c138088db5ffff
+              name: Kühlschrank
+              icon: mdi:fridge-outline
+            - entity: switch.0xa4c1380f7434ffff
+              name: Hobbyraum
+              icon: mdi:power-socket-eu
+            - entity: switch.smart_switch_23080457178050510d0448e1e9d4dbcd_outlet
+              name: Desktop
+              icon: mdi:desktop-tower-monitor
+            - entity: switch.merros_waschmaschine_outlet
+              name: Waschmaschine
+              icon: mdi:washing-machine
+            - entity: switch.bad_merros_bad_outlet
+              name: Merros-2 (Technikraum)
+              icon: mdi:power-socket-eu
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
+        - type: entities
+          title: Entfeuchter
+          state_color: true
+          show_header_toggle: false
+          entities:
+            - entity: switch.merros_entfeuchter_outlet
+              name: Hobbyraum
+              icon: mdi:air-humidifier
+            - entity: switch.schlafzimmer_merros_schlafzimmer_outlet
+              name: Technikraum
+              icon: mdi:air-humidifier
+          card_mod:
+            style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
 
 sections:
-- type: grid
-  title: Steuerung
-  column_span: 3
-  cards:
-  - type: heading
-    heading: Entfeuchter
-    heading_style: subtitle
-    icon: mdi:air-humidifier
-  - type: grid
-    columns: 5
-    square: false
-    grid_options:
-      columns: full
-    cards:
-    - type: custom:mushroom-entity-card
-      entity: switch.merros_entfeuchter_outlet
-      name: Hobbyraum
-      icon: mdi:air-humidifier
-      icon_color: teal
-      tap_action:
-        action: toggle
-      fill_container: true
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-    - type: custom:mushroom-entity-card
-      entity: switch.schlafzimmer_merros_schlafzimmer_outlet
-      name: Technikraum
-      icon: mdi:air-humidifier
-      icon_color: teal
-      tap_action:
-        action: toggle
-      fill_container: true
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
 - type: grid
   title: 🏠 Haus-Status
   cards:
