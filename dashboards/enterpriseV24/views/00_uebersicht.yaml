@@ -18,23 +18,23 @@ header:
           state_color: true
           show_header_toggle: false
           entities:
+            - entity: switch.smart_switch_23080457178050510d0448e1e9d4dbcd_outlet
+              name: "Merros 1 – Desktop (Büro)"
+              icon: mdi:desktop-tower-monitor
+            - entity: switch.bad_merros_bad_outlet
+              name: "Merros 2 – Technikraum"
+              icon: mdi:power-socket-eu
+            - entity: switch.merros_waschmaschine_outlet
+              name: "Merros 3 – Waschmaschine (Technikraum)"
+              icon: mdi:washing-machine
             - entity: switch.0xa4c13808410affff
-              name: HAOS (NUC6)
+              name: "HAOS (NUC6)"
               icon: mdi:server
             - entity: switch.0xa4c138088db5ffff
-              name: Kühlschrank
+              name: "Kühlschrank"
               icon: mdi:fridge-outline
             - entity: switch.0xa4c1380f7434ffff
-              name: Hobbyraum
-              icon: mdi:power-socket-eu
-            - entity: switch.smart_switch_23080457178050510d0448e1e9d4dbcd_outlet
-              name: Desktop
-              icon: mdi:desktop-tower-monitor
-            - entity: switch.merros_waschmaschine_outlet
-              name: Waschmaschine
-              icon: mdi:washing-machine
-            - entity: switch.bad_merros_bad_outlet
-              name: Merros-2 (Technikraum)
+              name: "Buero-Steckdose (Hobbyraum)"
               icon: mdi:power-socket-eu
           card_mod:
             style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
@@ -44,10 +44,10 @@ header:
           show_header_toggle: false
           entities:
             - entity: switch.merros_entfeuchter_outlet
-              name: Hobbyraum
+              name: "Merros 4 – Hobbyraum"
               icon: mdi:air-humidifier
             - entity: switch.schlafzimmer_merros_schlafzimmer_outlet
-              name: Technikraum
+              name: "Merros 5 – Technikraum"
               icon: mdi:air-humidifier
           card_mod:
             style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
