@@ -67,6 +67,9 @@ utility_meter:
   netz_bezug_tag:
     source: sensor.bitshake_smartmeterreader_lk13be_importactive
     cycle: daily
+  netz_bezug_woche:
+    source: sensor.bitshake_smartmeterreader_lk13be_importactive
+    cycle: weekly
   netz_bezug_monat:
     source: sensor.bitshake_smartmeterreader_lk13be_importactive
     cycle: monthly

@@ -55,99 +55,180 @@ views:
             card_mod: *stil_pv
 
       - type: grid
-        title: Ertrag & Ersparnis
+        title: Verbrauch, Ertrag & Ersparnis
+        column_span: 2
         cards:
           - type: heading
-            heading: Ertrag
+            heading: Verbrauch (Haus · bezahlt fürs Netz)
             heading_style: subtitle
-            icon: mdi:solar-power-variant
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_erzeugung_heute
-            name: Heute
-            icon: mdi:solar-power-variant
-            icon_color: orange
+            icon: mdi:home-lightning-bolt
+          - type: custom:mushroom-template-card
+            primary: Heute
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_tag') | float(0) %}{% set e = states('sensor.netz_einspeisung_tag') | float(0) %}{% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(haus) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(b * p) | replace('.', ',') }} €
+            icon: mdi:home-lightning-bolt
+            icon_color: blue
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_erzeugung_woche
-            name: Woche
-            icon: mdi:solar-power-variant
-            icon_color: orange
+          - type: custom:mushroom-template-card
+            primary: Woche
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_woche') | float(0) %}{% set e = states('sensor.netz_einspeisung_woche') | float(0) %}{% set pv = states('sensor.pv_erzeugung_woche') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(haus) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(b * p) | replace('.', ',') }} €
+            icon: mdi:home-lightning-bolt
+            icon_color: blue
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_erzeugung_monat
-            name: Monat
-            icon: mdi:solar-power-variant
-            icon_color: orange
+          - type: custom:mushroom-template-card
+            primary: Monat
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_monat') | float(0) %}{% set e = states('sensor.netz_einspeisung_monat') | float(0) %}{% set pv = states('sensor.pv_erzeugung_monat') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(haus) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(b * p) | replace('.', ',') }} €
+            icon: mdi:home-lightning-bolt
+            icon_color: blue
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
           - type: heading
-            heading: Ersparnis
+            heading: Ertrag (erzeugt · Wert)
             heading_style: subtitle
-            icon: mdi:piggy-bank-outline
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_ersparnis_heute
-            name: Heute
-            icon: mdi:piggy-bank-outline
-            icon_color: green
+            icon: mdi:solar-power-variant
+          - type: custom:mushroom-template-card
+            primary: Heute
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_tag') | float(0) %}{% set e = states('sensor.netz_einspeisung_tag') | float(0) %}{% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(pv) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(pv * p) | replace('.', ',') }} €
+            icon: mdi:solar-power-variant
+            icon_color: orange
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_ersparnis_woche
-            name: Woche
-            icon: mdi:piggy-bank-outline
-            icon_color: green
+          - type: custom:mushroom-template-card
+            primary: Woche
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_woche') | float(0) %}{% set e = states('sensor.netz_einspeisung_woche') | float(0) %}{% set pv = states('sensor.pv_erzeugung_woche') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(pv) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(pv * p) | replace('.', ',') }} €
+            icon: mdi:solar-power-variant
+            icon_color: orange
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_ersparnis_monat
-            name: Monat
-            icon: mdi:piggy-bank
-            icon_color: green
+          - type: custom:mushroom-template-card
+            primary: Monat
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_monat') | float(0) %}{% set e = states('sensor.netz_einspeisung_monat') | float(0) %}{% set pv = states('sensor.pv_erzeugung_monat') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(pv) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(pv * p) | replace('.', ',') }} €
+            icon: mdi:solar-power-variant
+            icon_color: orange
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
               columns: 4
             card_mod: *stil_pv
           - type: heading
-            heading: Quote heute
+            heading: Ersparnis (selbst genutzt)
+            heading_style: subtitle
+            icon: mdi:piggy-bank-outline
+          - type: custom:mushroom-template-card
+            primary: Heute
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_tag') | float(0) %}{% set e = states('sensor.netz_einspeisung_tag') | float(0) %}{% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(eigen) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(eigen * p) | replace('.', ',') }} €
+            icon: mdi:piggy-bank-outline
+            icon_color: green
+            layout: vertical
+            multiline_secondary: true
+            fill_container: true
+            grid_options:
+              columns: 4
+            card_mod: *stil_pv
+          - type: custom:mushroom-template-card
+            primary: Woche
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_woche') | float(0) %}{% set e = states('sensor.netz_einspeisung_woche') | float(0) %}{% set pv = states('sensor.pv_erzeugung_woche') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(eigen) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(eigen * p) | replace('.', ',') }} €
+            icon: mdi:piggy-bank-outline
+            icon_color: green
+            layout: vertical
+            multiline_secondary: true
+            fill_container: true
+            grid_options:
+              columns: 4
+            card_mod: *stil_pv
+          - type: custom:mushroom-template-card
+            primary: Monat
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_monat') | float(0) %}{% set e = states('sensor.netz_einspeisung_monat') | float(0) %}{% set pv = states('sensor.pv_erzeugung_monat') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}{{ '%.2f' | format(eigen) | replace('.', ',') }} kWh
+              {{ '%.2f' | format(eigen * p) | replace('.', ',') }} €
+            icon: mdi:piggy-bank-outline
+            icon_color: green
+            layout: vertical
+            multiline_secondary: true
+            fill_container: true
+            grid_options:
+              columns: 4
+            card_mod: *stil_pv
+          - type: heading
+            heading: Quoten (Eigenverbrauch · Autarkie)
             heading_style: subtitle
             icon: mdi:percent-circle-outline
-          - type: custom:mushroom-entity-card
-            entity: sensor.pv_eigenverbrauchsquote_heute
-            name: Eigenverbrauch
+          - type: custom:mushroom-template-card
+            primary: Heute
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_tag') | float(0) %}{% set e = states('sensor.netz_einspeisung_tag') | float(0) %}{% set pv = states('sensor.pv_erzeugung_heute') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}Eigen {{ (eigen / pv * 100) | round(0) | int if pv > 0 else 0 }} %
+              Autark {{ (eigen / haus * 100) | round(0) | int if haus > 0 else 0 }} %
             icon: mdi:percent-circle-outline
             icon_color: teal
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
-              columns: 6
+              columns: 4
             card_mod: *stil_pv
-          - type: custom:mushroom-entity-card
-            entity: sensor.autarkiegrad_heute
-            name: Autarkie
-            icon: mdi:shield-sun-outline
+          - type: custom:mushroom-template-card
+            primary: Woche
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_woche') | float(0) %}{% set e = states('sensor.netz_einspeisung_woche') | float(0) %}{% set pv = states('sensor.pv_erzeugung_woche') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}Eigen {{ (eigen / pv * 100) | round(0) | int if pv > 0 else 0 }} %
+              Autark {{ (eigen / haus * 100) | round(0) | int if haus > 0 else 0 }} %
+            icon: mdi:percent-circle-outline
             icon_color: teal
             layout: vertical
+            multiline_secondary: true
             fill_container: true
             grid_options:
-              columns: 6
+              columns: 4
+            card_mod: *stil_pv
+          - type: custom:mushroom-template-card
+            primary: Monat
+            secondary: |-
+              {% set p = states('input_number.strompreis_cent') | float(31) / 100 %}{% set b = states('sensor.netz_bezug_monat') | float(0) %}{% set e = states('sensor.netz_einspeisung_monat') | float(0) %}{% set pv = states('sensor.pv_erzeugung_monat') | float(0) %}{% set eigen = [pv - e, 0] | max %}{% set haus = [b + pv - e, 0] | max %}Eigen {{ (eigen / pv * 100) | round(0) | int if pv > 0 else 0 }} %
+              Autark {{ (eigen / haus * 100) | round(0) | int if haus > 0 else 0 }} %
+            icon: mdi:percent-circle-outline
+            icon_color: teal
+            layout: vertical
+            multiline_secondary: true
+            fill_container: true
+            grid_options:
+              columns: 4
             card_mod: *stil_pv
 
       - type: grid
