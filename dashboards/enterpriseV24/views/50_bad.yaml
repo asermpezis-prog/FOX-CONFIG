@@ -48,12 +48,6 @@ cards:
     apex_config:
       title:
         text: Temperatur (°C)
-  - id: dehumidifier
-    opposite: true
-    min: 0
-    max: 1
-    decimals: 0
-    show: false
   series:
   - entity: sensor.0xa4c1380ab990ffff_humidity
     name: Luftfeuchtigkeit
@@ -78,18 +72,6 @@ cards:
       func: avg
     show:
       in_header: raw
-      legend_value: false
-  - entity: switch.bad_merros_bad_outlet
-    name: Entfeuchter läuft
-    yaxis_id: dehumidifier
-    type: area
-    curve: stepline
-    stroke_width: 2
-    opacity: 0.25
-    extend_to: now
-    transform: 'return x === ''on'' ? 1 : 0;'
-    show:
-      in_header: false
       legend_value: false
   apex_config:
     chart:
@@ -126,23 +108,11 @@ cards:
     style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,188,212,0.28);\n  background: rgba(0,188,212,0.08);\n\
       \  box-shadow: none;\n}"
 - type: entities
-  title: Entfeuchter
+  title: Luftfeuchtigkeit
   show_header_toggle: false
   entities:
-  - entity: switch.bad_merros_bad_outlet
-    name: Entfeuchter
   - entity: sensor.0xa4c1380ab990ffff_humidity
     name: Aktuelle Feuchtigkeit
-  - entity: sensor.bad_merros_bad_power
-    name: Leistung
-  - entity: sensor.bad_merros_bad_current
-    name: Strom
-  - entity: sensor.bad_merros_bad_voltage
-    name: Spannung
-  - entity: sensor.bad_merros_bad_energy
-    name: Energie
-  - entity: sensor.bad_merros_bad_signal_strength
-    name: Signal
   card_mod:
     style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,188,212,0.28);\n  background: rgba(0,188,212,0.08);\n\
       \  box-shadow: none;\n}"

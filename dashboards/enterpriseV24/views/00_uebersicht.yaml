@@ -17,7 +17,7 @@ header:
         style: "ha-card {\n  border-radius: 18px;\n  background: linear-gradient(135deg,\n    rgba(33,150,243,0.10),\n    rgba(156,39,176,0.08));\n\
           \  border: 1px solid rgba(120,120,120,0.18);\n  box-shadow: none;\n}"
     - type: grid
-      columns: 5
+      columns: 6
       square: false
       cards:
       - type: custom:mushroom-entity-card
@@ -75,6 +75,18 @@ header:
         fill_container: true
         card_mod:
           style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
+      - type: custom:mushroom-entity-card
+        entity: switch.bad_merros_bad_outlet
+        name: Merros-2
+        icon: mdi:power-socket-eu
+        icon_color: teal
+        layout: vertical
+        tap_action:
+          action: toggle
+        fill_container: true
+        card_mod:
+          style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
+
 sections:
 - type: grid
   title: Steuerung
@@ -110,16 +122,6 @@ sections:
       fill_container: true
       card_mod:
         style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
-    - type: custom:mushroom-entity-card
-      entity: switch.bad_merros_bad_outlet
-      name: Bad
-      icon: mdi:air-humidifier
-      icon_color: teal
-      tap_action:
-        action: toggle
-      fill_container: true
-      card_mod:
-        style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
 - type: grid
   title: 🏠 Haus-Status
   cards:
@@ -147,7 +149,7 @@ sections:
   - type: custom:mushroom-template-card
     primary: Aktive Entfeuchter
     secondary: "{% set ns = namespace(anzahl=0, namen=[]) %}\n{% for name, ent in [\n  ('Hobbyraum','switch.merros_entfeuchter_outlet'),\n\
-      \  ('Technikraum','switch.schlafzimmer_merros_schlafzimmer_outlet'),\n  ('Bad','switch.bad_merros_bad_outlet')\n] %}\n\
+      \  ('Technikraum','switch.schlafzimmer_merros_schlafzimmer_outlet')\n] %}\n\
       \  {% if is_state(ent,'on') %}\n    {% set ns.anzahl = ns.anzahl + 1 %}\n    {% set ns.namen = ns.namen + [name] %}\n\
       \  {% endif %}\n{% endfor %}\n{{ ns.anzahl }} aktiv{% if ns.namen %} · {{ ns.namen|join(', ') }}{% endif %}"
     icon: mdi:air-humidifier
@@ -156,7 +158,7 @@ sections:
     icon_color: blue
     card_mod:
       style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(33,150,243,0.35);\n  background:\n    {% if is_state('switch.merros_entfeuchter_outlet','on')\n\
-        \       or is_state('switch.schlafzimmer_merros_schlafzimmer_outlet','on')\n       or is_state('switch.bad_merros_bad_outlet','on')\
+        \       or is_state('switch.schlafzimmer_merros_schlafzimmer_outlet','on')\
         \ %}\n      rgba(33,150,243,0.20)\n    {% else %}\n      rgba(33,150,243,0.06)\n    {% endif %};\n}"
   - type: custom:mushroom-template-card
     primary: Meross-Steckdosen
@@ -551,9 +553,7 @@ sections:
             primary: Bad
             secondary: '🌡 {{ states(''sensor.0xa4c1380ab990ffff_temperature'') }} °C
 
-              💧 {{ states(''sensor.0xa4c1380ab990ffff_humidity'') }} %
-
-              🔌 Entfeuchter {{ ''an'' if is_state(''switch.bad_merros_bad_outlet'',''on'') else ''aus'' }}'
+              💧 {{ states(''sensor.0xa4c1380ab990ffff_humidity'') }} %'
             icon: mdi:bathtub-outline
             multiline_secondary: true
             fill_container: true

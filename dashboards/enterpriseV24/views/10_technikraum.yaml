@@ -140,6 +140,10 @@ cards:
   title: Weitere Geräte
   show_header_toggle: false
   entities:
+  - entity: switch.bad_merros_bad_outlet
+    name: Steckdose Merros-2
+  - entity: sensor.bad_merros_bad_power
+    name: Leistung Merros-2
   - entity: binary_sensor.0x0015bc0031064e35_smoke
     name: Rauch erkannt
   - entity: switch.0x0015bc0031064e35_alarm
