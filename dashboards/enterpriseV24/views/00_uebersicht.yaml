@@ -135,7 +135,7 @@ sections:
       columns: 24
     cards:
       - type: grid
-        columns: 4
+        columns: 2
         square: false
         cards:
           - type: custom:mushroom-template-card
@@ -184,6 +184,30 @@ sections:
             tap_action:
               action: navigate
               navigation_path: /dashboard-energie-pv
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Grundlast
+            secondary: "{% set g = states('sensor.grundlast') | float(0) %}{{ g | round(0) | int }} W · {{ '%.1f' | format(g * 24 / 1000) | replace('.', ',') }} kWh/Tag\n≈ {{ (g * 8.76 * states('input_number.strompreis_cent') | float(31) / 100) | round(0) | int }} € im Jahr"
+            icon: mdi:power-sleep
+            multiline_secondary: true
+            fill_container: true
+            icon_color: "{{ 'green' if states('sensor.grundlast') | float(0) < 150 else ('amber' if states('sensor.grundlast') | float(0) < 300 else 'red') }}"
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv/stromzaehler
+            card_mod:
+              style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
+          - type: custom:mushroom-template-card
+            primary: Phasen jetzt
+            secondary: "L1 {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l1') | float(0) | round(0) | int }} W · L2 {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l2') | float(0) | round(0) | int }} W\nL3 {{ states('sensor.bitshake_smartmeterreader_lk13be_power_l3') | float(0) | round(0) | int }} W"
+            icon: mdi:sine-wave
+            multiline_secondary: true
+            fill_container: true
+            icon_color: "{{ 'red' if [states('sensor.bitshake_smartmeterreader_lk13be_curr_l1') | float(0), states('sensor.bitshake_smartmeterreader_lk13be_curr_l2') | float(0), states('sensor.bitshake_smartmeterreader_lk13be_curr_l3') | float(0)] | max > 13 else 'indigo' }}"
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-energie-pv/stromzaehler
             card_mod:
               style: "ha-card {\n  background: rgba(255,193,7,0.10);\n  border: 1px solid rgba(255,193,7,0.32);\n  border-radius: 16px;\n  box-shadow: none;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\nha-card:hover {\n  transform: translateY(-1px);\n  box-shadow: 0 3px 10px rgba(0,0,0,0.10);\n}"
 - type: grid
@@ -255,7 +279,7 @@ sections:
       columns: 24
     cards:
       - type: grid
-        columns: 4
+        columns: 2
         square: false
         cards:
           - type: custom:mushroom-template-card
@@ -314,8 +338,6 @@ sections:
           - type: custom:mushroom-template-card
             primary: Flur
             secondary: Keine Geräte
-
-              💧 {{ states(''sensor.0x983268fffe9b883c_humidity'') }} %'
             icon: mdi:door
             multiline_secondary: true
             fill_container: true
@@ -337,7 +359,7 @@ sections:
       columns: 24
     cards:
       - type: grid
-        columns: 4
+        columns: 2
         square: false
         cards:
           - type: custom:mushroom-template-card
@@ -406,7 +428,7 @@ sections:
       columns: 24
     cards:
       - type: grid
-        columns: 4
+        columns: 2
         square: false
         cards:
           - type: custom:mushroom-template-card
@@ -461,7 +483,7 @@ sections:
       columns: 24
     cards:
       - type: grid
-        columns: 4
+        columns: 2
         square: false
         cards:
           - type: custom:mushroom-template-card

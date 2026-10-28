@@ -348,6 +348,17 @@ views:
         title: Jetzt
         cards:
           - type: custom:mushroom-template-card
+            primary: Grundlast (24 h)
+            secondary: "{% set g = states('sensor.grundlast') | float(0) %}{{ g | round(0) | int }} W · {{ '%.1f' | format(g * 24 / 1000) | replace('.', ',') }} kWh/Tag\n≈ {{ (g * 8.76 * states('input_number.strompreis_cent') | float(31) / 100) | round(0) | int }} € im Jahr"
+            icon: mdi:power-sleep
+            icon_color: "{{ 'green' if states('sensor.grundlast') | float(0) < 150 else ('amber' if states('sensor.grundlast') | float(0) < 300 else 'red') }}"
+            entity: sensor.grundlast
+            multiline_secondary: true
+            fill_container: true
+            grid_options:
+              columns: 12
+            card_mod: *stil_netz
+          - type: custom:mushroom-template-card
             primary: Netz
             secondary: >
               {% set p = states('sensor.bitshake_smartmeterreader_lk13be_power') | float(0) %}

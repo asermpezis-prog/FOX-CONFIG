@@ -63,6 +63,20 @@ input_number:
     mode: box
     initial: 31
 
+sensor:
+  # Grundlast = was nachts dauerhaft läuft. 5-%-Perzentil des Hausverbrauchs der
+  # letzten 24 h, damit kurze Ausreißer nach unten nicht zählen.
+  - platform: statistics
+    name: "Grundlast"
+    unique_id: grundlast_24h
+    entity_id: sensor.hausverbrauch_leistung
+    state_characteristic: percentile
+    percentile: 5
+    max_age:
+      hours: 24
+    sampling_size: 10000
+    precision: 0
+
 utility_meter:
   netz_bezug_tag:
     source: sensor.bitshake_smartmeterreader_lk13be_importactive
