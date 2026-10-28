@@ -28,13 +28,13 @@ header:
               name: "Merros 3 – Waschmaschine (Technikraum)"
               icon: mdi:washing-machine
             - entity: switch.0xa4c13808410affff
-              name: "HAOS (NUC6)"
+              name: "Selly 1 – HAOS (NUC6)"
               icon: mdi:server
             - entity: switch.0xa4c138088db5ffff
-              name: "Kühlschrank"
+              name: "Selly 2 – Kühlschrank"
               icon: mdi:fridge-outline
             - entity: switch.0xa4c1380f7434ffff
-              name: "Buero-Steckdose (Hobbyraum)"
+              name: "Selly 3 – Hobbyraum"
               icon: mdi:power-socket-eu
           card_mod:
             style: "ha-card {\n  border-radius: 16px;\n  border: 1px solid rgba(0,150,136,0.26);\n  background: rgba(0,150,136,0.08);\n  box-shadow: none;\n}"
